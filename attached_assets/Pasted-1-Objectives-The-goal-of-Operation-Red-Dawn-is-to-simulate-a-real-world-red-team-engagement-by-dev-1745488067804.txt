@@ -1,0 +1,97 @@
+1. Objectives
+The goal of Operation: Red Dawn is to simulate a real-world red team engagement by
+developing a Python-driven offensive toolchain for reconnaissance, exploitation, privilege
+escalation, and Active Directory enumeration, all linked through a custom-built C2 dashboard.
+Students will collaborate in five specialized groups, each responsible for automating and
+visualizing one phase of the red team operation. The final product should emulate adversary
+behavior in a controlled environment, helping teams understand both offensive tooling and
+defensive detection opportunities.
+1.1.Scenario Context
+You have gained access to a remote Kali Linux machine via TeamViewer or AnyDesk,
+simulating a compromised red team operator system. From this foothold, your mission is to:
+• Identify and compromise systems using standard enumeration and exploitation
+techniques
+• Escalate privileges and extract key system and domain information
+• Exfiltrate findings back to a web-based C2 dashboard, simulating attacker-controlled
+infrastructure
+You do not start with credentials. Initial access must be achieved through enumeration and
+exploitation.
+1.2.Group Responsibilities
+Group Focus Area Description
+1 Enumeration Scan and identify live hosts, open ports, services,
+shares, and domains
+2 Privilege Escalation Detect local privilege escalation paths and
+misconfigurations
+3 Exploitation Deliver payloads, automate remote code execution or
+lateral movement
+4 Active Directory Scan Gather domain user, group, and trust data using ADaware tools
+5 C2 & Dashboard Build a web server to receive JSON data and visualize
+submissions
+FINAL PROJECT
+3 Azrieli School of Continuing Studies of the Technion
+1.3.Group-Specific Requirements
+1.3.1.Group 1 - Enumeration
+• Minimal Requirements:
+o Python script that automates scanning (e.g. via python-nmap, subprocess, or
+socket)
+o Must detect and log:
+▪ IPs and available subnets
+▪ Live hosts
+▪ Open ports and services
+▪ Basic OS fingerprinting
+▪ NetBIOS or SMB shares (if accessible)
+▪ Screenshot web application (if accessible))
+o Output formatted in JSON and POST-ed to the dashboard
+• Bonus Requirements:
+o IDS/IPS Evasion
+o DNS enumeration
+o Integration with httpx, nuclei, or subfinder
+o Host tagging (e.g., web server, domain controller)
+1.3.2.Group 2 - Exploitation
+• Minimal Requirements:
+o Python wrapper around a basic payload generation mechanism (msfvenom,
+nishang, etc.)
+o Brute force or default credential attempts (Password spraying etc.)
+• Bonus Requirements:
+o Web shell handler
+o Payload obfuscation or encoding
+o Simple shell callback detection
+o File drop + execution
+1.3.3.Group 3 - Privilege Escalation
+• Minimal Requirements:
+o Run tools such as linpeas or winpeas and extract meaningful data using Python
+o Identify:
+▪ Vulnerable services
+▪ Interesting files (e.g., creds, backups)
+▪ User privilege levels
+o Summarize key findings in a clean JSON report
+FINAL PROJECT
+4 Azrieli School of Continuing Studies of the Technion
+• Bonus Requirements:
+o Parse and highlight specific CVE-linked issues
+o Token impersonation or DLL hijacking attempt
+o Python privesc checker from scratch
+o Upload results in markdown-style format
+1.3.4.Group 4 – Active Directory Scanning
+• Minimal Requirements:
+o Extract domain user/group/OU data using tools like ldap3, crackmapexec, or
+BloodHound
+o Summarize results in a structured format
+o Identify relationships (e.g., Domain Admins, trust paths)
+• Bonus Requirements:
+o Automate BloodHound collector execution + upload
+o Build a JSON map of user-group relationships
+o Identify privilege escalation chains within AD
+o Annotate results with known attack paths (AS-REP Roasting, Kerberoasting, etc.)
+1.3.5.Group 5 – C2 Server & Dashboard
+• Minimal Requirements:
+o Web server accepting POSTed JSON submissions from other teams
+o Each submission must be logged and displayed
+o Include at least:
+▪ Per-host views
+▪ Per-group submission breakdown
+o Application protected with authentication
+• Bonus Requirements:
+o Charts, tables, or alert banners using Plotly, Chart.js, or similar
+o Admin panel with search/filtering options
+o Modular architecture for accepting future plugins/modules
