@@ -44,11 +44,21 @@ mock_data = {
 def index():
     return render_template('index.html', data=mock_data)
 
-@app.route('/api/submit', methods=['POST'])
-def submit_data():
-    data = request.json
-    data['timestamp'] = datetime.now().isoformat()
-    return jsonify({"status": "success"})
+@app.route('/enumeration')
+def enumeration():
+    return render_template('enumeration.html', data=mock_data['enumeration'])
+
+@app.route('/privilege-escalation')
+def privilege_escalation():
+    return render_template('privilege_escalation.html', data=mock_data['privilege_escalation'])
+
+@app.route('/exploitation')
+def exploitation():
+    return render_template('exploitation.html', data=mock_data['exploitation'])
+
+@app.route('/active-directory')
+def active_directory():
+    return render_template('active_directory.html', data=mock_data['active_directory'])
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

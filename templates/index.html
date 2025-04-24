@@ -1,141 +1,60 @@
-
 {% extends "base.html" %}
 {% block content %}
 <h2>Operation: Red Dawn Dashboard</h2>
 
-<!-- Enumeration Section -->
-<div class="card mt-4">
-    <div class="card-header bg-primary text-white">
-        <h4>1. Enumeration</h4>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-6">
-                <h5>Live Hosts</h5>
-                <ul class="list-group">
-                    {% for host in data.enumeration.live_hosts %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        {{ host }}
-                        <span class="badge bg-success rounded-pill">Active</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <h5>Services Detected</h5>
-                <div class="p-3">
-                    {% for service in data.enumeration.services %}
-                    <span class="badge bg-info me-2 p-2">{{ service }}</span>
-                    {% endfor %}
-                </div>
+<div class="row mt-4">
+    <!-- Enumeration Summary -->
+    <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-search"></i> Enumeration
+                </h5>
+                <p class="h2 mb-0">{{ data.enumeration.live_hosts|length }}</p>
+                <p class="text-muted">Live Hosts</p>
+                <a href="/enumeration" class="btn btn-primary btn-sm">View Details</a>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Privilege Escalation Section -->
-<div class="card mt-4">
-    <div class="card-header bg-warning">
-        <h4>2. Privilege Escalation</h4>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-6">
-                <h5>Severity Distribution</h5>
-                <div class="progress mb-3" style="height: 25px;">
-                    <div class="progress-bar bg-danger" style="width: 30%">High ({{ data.privilege_escalation.severity_counts.High }})</div>
-                    <div class="progress-bar bg-warning" style="width: 50%">Medium ({{ data.privilege_escalation.severity_counts.Medium }})</div>
-                    <div class="progress-bar bg-success" style="width: 20%">Low ({{ data.privilege_escalation.severity_counts.Low }})</div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <h5>Vulnerable Services</h5>
-                <ul class="list-group">
-                    {% for service in data.privilege_escalation.vulnerable_services %}
-                    <li class="list-group-item list-group-item-danger">{{ service }}</li>
-                    {% endfor %}
-                </ul>
+    <!-- Privilege Escalation Summary -->
+    <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-shield-lock"></i> Privilege Escalation
+                </h5>
+                <p class="h2 mb-0">{{ data.privilege_escalation.severity_counts.High }}</p>
+                <p class="text-muted">High Severity Issues</p>
+                <a href="/privilege-escalation" class="btn btn-primary btn-sm">View Details</a>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Exploitation Section -->
-<div class="card mt-4">
-    <div class="card-header bg-danger text-white">
-        <h4>3. Exploitation</h4>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="alert alert-success">
-                    <h3 class="text-center">{{ data.exploitation.active_sessions }}</h3>
-                    <p class="text-center mb-0">Active Sessions</p>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <h5>Successful Exploits</h5>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Target</th>
-                            <th>Method</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for exploit in data.exploitation.successful_exploits %}
-                        <tr>
-                            <td>{{ exploit.target }}</td>
-                            <td>{{ exploit.method }}</td>
-                            <td><span class="badge bg-success">{{ exploit.status }}</span></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+    <!-- Exploitation Summary -->
+    <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-bug"></i> Exploitation
+                </h5>
+                <p class="h2 mb-0">{{ data.exploitation.active_sessions }}</p>
+                <p class="text-muted">Active Sessions</p>
+                <a href="/exploitation" class="btn btn-primary btn-sm">View Details</a>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Active Directory Section -->
-<div class="card mt-4 mb-4">
-    <div class="card-header bg-info text-white">
-        <h4>4. Active Directory Scan</h4>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-4">
-                <h5>Domain Info</h5>
-                <div class="alert alert-info">
-                    <strong>Domain:</strong> {{ data.active_directory.domain_info.name }}
-                </div>
-                <h6>Trust Relationships</h6>
-                <ul class="list-group">
-                    {% for trust in data.active_directory.domain_info.trust_relationships %}
-                    <li class="list-group-item">{{ trust }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h5>Users</h5>
-                <div class="list-group">
-                    {% for user in data.active_directory.users %}
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="bi bi-person"></i> {{ user }}
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <h5>Groups</h5>
-                <div class="list-group">
-                    {% for group in data.active_directory.groups %}
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="bi bi-people"></i> {{ group }}
-                    </a>
-                    {% endfor %}
-                </div>
+    <!-- Active Directory Summary -->
+    <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-diagram-3"></i> Active Directory
+                </h5>
+                <p class="h2 mb-0">{{ data.active_directory.users|length }}</p>
+                <p class="text-muted">Domain Users</p>
+                <a href="/active-directory" class="btn btn-primary btn-sm">View Details</a>
             </div>
         </div>
     </div>
