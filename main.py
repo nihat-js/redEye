@@ -1,9 +1,15 @@
-
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import datetime
 import json
 
 app = Flask(__name__)
+app.secret_key = 'your-secret-key'  # Change this to a secure key in production
+
+# Mock user for demo - in production use proper user management
+MOCK_USER = {
+    "username": "admin",
+    "password": "password123"
+}
 
 # Mock data
 mock_data = {
@@ -42,23 +48,51 @@ mock_data = {
 
 @app.route('/')
 def index():
-    return render_template('index.html', data=mock_data)
+    if 'username' in session:
+        return render_template('index.html', data=mock_data)
+    return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if username == MOCK_USER["username"] and password == MOCK_USER["password"]:
+            session['username'] = username
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid credentials')
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('login'))
 
 @app.route('/enumeration')
 def enumeration():
-    return render_template('enumeration.html', data=mock_data['enumeration'])
+    if 'username' in session:
+        return render_template('enumeration.html', data=mock_data['enumeration'])
+    return redirect(url_for('login'))
 
 @app.route('/privilege-escalation')
 def privilege_escalation():
-    return render_template('privilege_escalation.html', data=mock_data['privilege_escalation'])
+    if 'username' in session:
+        return render_template('privilege_escalation.html', data=mock_data['privilege_escalation'])
+    return redirect(url_for('login'))
 
 @app.route('/exploitation')
 def exploitation():
-    return render_template('exploitation.html', data=mock_data['exploitation'])
+    if 'username' in session:
+        return render_template('exploitation.html', data=mock_data['exploitation'])
+    return redirect(url_for('login'))
 
 @app.route('/active-directory')
 def active_directory():
-    return render_template('active_directory.html', data=mock_data['active_directory'])
+    if 'username' in session:
+        return render_template('active_directory.html', data=mock_data['active_directory'])
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
