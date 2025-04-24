@@ -102,5 +102,11 @@ def active_directory():
         return render_template('active-directory.html', data=mock_data['active_directory'])
     return redirect(url_for('login'))
 
+@app.route('/scripts')
+def scripts():
+    if 'username' in session:
+        return render_template('scripts.html')
+    return redirect(url_for('login'))
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
