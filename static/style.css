@@ -2,6 +2,29 @@
 /* Custom styles */
 .min-vh-100 {
     min-height: 100vh;
+    background: #1a1a1a;
+}
+
+.cyber-bg {
+    min-height: 400px;
+    background: url('data:image/svg+xml,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="45" stroke="%23dc3545" stroke-width="0.5" fill="none"/><circle cx="50" cy="50" r="35" stroke="%23dc3545" stroke-width="0.5" fill="none"/><circle cx="50" cy="50" r="25" stroke="%23dc3545" stroke-width="0.5" fill="none"/></svg>') center/cover;
+    background-color: #000;
+}
+
+.cyber-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+}
+
+.video-background iframe {
+    width: 120vw;
+    height: 67.5vw;
+    min-height: 120vh;
+    min-width: 213.32vh;
 }
 
 /* Kali Terminal styles */
