@@ -3,3 +3,36 @@
 .min-vh-100 {
     min-height: 100vh;
 }
+
+/* Terminal styles */
+.terminal {
+    background-color: #000;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+}
+
+.terminal-input-container {
+    background-color: #000;
+}
+
+.terminal-input {
+    background-color: #000 !important;
+    color: #00ff00 !important;
+    border: none !important;
+}
+
+.terminal-input:focus {
+    box-shadow: none !important;
+}
+
+#terminal-output {
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.input-group-text {
+    background-color: #000 !important;
+    color: #00ff00 !important;
+    border: none !important;
+}
