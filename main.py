@@ -5,13 +5,16 @@ import json
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'  # Change this to a secure key in production
 
-# Mock user for demo - in production use proper user management
-MOCK_USER = {
-    "username": "admin",
-    "password": "password123"
+# Default users for demo
+USERS = {
+    "admin": {"password": "admin", "role": "admin"},
+    "pentester1": {"password": "test123", "role": "user"},
+    "pentester2": {"password": "test456", "role": "user"},
+    "pentester3": {"password": "test789", "role": "user"},
+    "pentester4": {"password": "test000", "role": "user"}
 }
 
-# Mock data
+# Mock data (from original code)
 mock_data = {
     'enumeration': {
         'live_hosts': ['192.168.1.100', '192.168.1.101', '192.168.1.102'],
@@ -47,10 +50,8 @@ mock_data = {
 }
 
 @app.route('/')
-def index():
-    if 'username' in session:
-        return render_template('index.html', data=mock_data)
-    return redirect(url_for('login'))
+def home():
+    return render_template('home.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -58,8 +59,9 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        if username == MOCK_USER["username"] and password == MOCK_USER["password"]:
+        if username in USERS and USERS[username]["password"] == password:
             session['username'] = username
+            session['role'] = USERS[username]["role"]
             return redirect(url_for('index'))
         else:
             flash('Invalid credentials')
@@ -68,7 +70,13 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
+
+@app.route('/dashboard')
+def index():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('index.html', data=mock_data)
 
 @app.route('/enumeration')
 def enumeration():
@@ -91,7 +99,7 @@ def exploitation():
 @app.route('/active-directory')
 def active_directory():
     if 'username' in session:
-        return render_template('active_directory.html', data=mock_data['active_directory'])
+        return render_template('active-directory.html', data=mock_data['active_directory'])
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
