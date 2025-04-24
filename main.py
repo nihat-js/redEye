@@ -108,5 +108,11 @@ def scripts():
         return render_template('scripts.html')
     return redirect(url_for('login'))
 
+@app.route('/handler')
+def handler():
+    if 'username' in session:
+        return render_template('handler.html')
+    return redirect(url_for('login'))
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

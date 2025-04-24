@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h2>Handler</h2>
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-dark text-light d-flex justify-content-between align-items-center">
+                <span>Terminal Session</span>
+                <div>
+                    <button class="btn btn-sm btn-outline-light">Clear</button>
+                    <button class="btn btn-sm btn-outline-light ms-2">New Session</button>
+                </div>
+            </div>
+            <div class="card-body kali-terminal p-0">
+                <div id="terminal-output" class="p-3">
+                    <div class="terminal-line">┌──(kali㉿redteam)-[~]</div>
+                    <div class="terminal-line">└─$ _</div>
+                </div>
+                <div class="terminal-input-container p-3 border-top">
+                    <div class="input-group">
+                        <span class="input-group-text">└─$</span>
+                        <input type="text" id="terminal-input" class="form-control terminal-input" placeholder="Enter command...">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

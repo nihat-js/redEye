@@ -4,21 +4,23 @@
     min-height: 100vh;
 }
 
-/* Terminal styles */
-.terminal {
-    background-color: #000;
-    color: #00ff00;
-    font-family: 'Courier New', monospace;
+/* Kali Terminal styles */
+.kali-terminal {
+    background-color: #1F2229;
+    color: #00FF00;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
 }
 
 .terminal-input-container {
-    background-color: #000;
+    background-color: #1F2229;
+    border-top: 1px solid #2F3239 !important;
 }
 
 .terminal-input {
-    background-color: #000 !important;
-    color: #00ff00 !important;
+    background-color: #1F2229 !important;
+    color: #00FF00 !important;
     border: none !important;
+    font-weight: bold;
 }
 
 .terminal-input:focus {
@@ -26,13 +28,20 @@
 }
 
 #terminal-output {
-    min-height: 200px;
-    max-height: 400px;
+    min-height: 300px;
+    max-height: 600px;
     overflow-y: auto;
 }
 
 .input-group-text {
-    background-color: #000 !important;
-    color: #00ff00 !important;
+    background-color: #1F2229 !important;
+    color: #00FF00 !important;
     border: none !important;
+    font-weight: bold;
+}
+
+.terminal-line {
+    margin: 4px 0;
+    color: #00FF00;
+    font-weight: bold;
 }
