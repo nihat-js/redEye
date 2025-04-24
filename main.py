@@ -5,25 +5,49 @@ import json
 
 app = Flask(__name__)
 
-# Temporary storage (replace with database in production)
-submissions = []
-hosts = set()
+# Mock data
+mock_data = {
+    'enumeration': {
+        'live_hosts': ['192.168.1.100', '192.168.1.101', '192.168.1.102'],
+        'open_ports': {
+            '192.168.1.100': [80, 443, 22],
+            '192.168.1.101': [21, 80, 3389],
+        },
+        'services': ['HTTP', 'SSH', 'RDP', 'FTP'],
+        'shares': ['\\\\SERVER\\Public', '\\\\SERVER\\Data'],
+    },
+    'privilege_escalation': {
+        'vulnerable_services': ['spoolsv.exe', 'unquoted_service.exe'],
+        'weak_permissions': ['/etc/shadow', 'C:\\Program Files\\Vulnerable App'],
+        'risky_programs': ['sudo', 'winlogon.exe'],
+        'severity_counts': {'High': 3, 'Medium': 5, 'Low': 2}
+    },
+    'exploitation': {
+        'successful_exploits': [
+            {'target': '192.168.1.100', 'method': 'MS17-010', 'status': 'Success'},
+            {'target': '192.168.1.101', 'method': 'CVE-2021-44228', 'status': 'Success'},
+        ],
+        'active_sessions': 2,
+        'payloads_delivered': 5
+    },
+    'active_directory': {
+        'users': ['Administrator', 'Guest', 'jsmith', 'awhite'],
+        'groups': ['Domain Admins', 'Enterprise Admins', 'Users'],
+        'domain_info': {
+            'name': 'CORP.LOCAL',
+            'trust_relationships': ['EXTERNAL.COM', 'PARTNER.COM']
+        }
+    }
+}
 
 @app.route('/')
 def index():
-    return render_template('index.html',
-                         total_hosts=len(hosts),
-                         total_submissions=len(submissions),
-                         active_sessions=0,
-                         recent_activities=[])
+    return render_template('index.html', data=mock_data)
 
 @app.route('/api/submit', methods=['POST'])
 def submit_data():
     data = request.json
     data['timestamp'] = datetime.now().isoformat()
-    submissions.append(data)
-    if 'host' in data:
-        hosts.add(data['host'])
     return jsonify({"status": "success"})
 
 if __name__ == '__main__':
