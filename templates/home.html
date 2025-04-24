@@ -7,10 +7,37 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         .hero-section {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5');
-            background-size: cover;
+            position: relative;
             color: white;
             padding: 100px 0;
+            overflow: hidden;
+        }
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .video-background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+        }
+        .video-background iframe {
+            width: 100vw;
+            height: 56.25vw;
+            min-height: 100vh;
+            min-width: 177.77vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
@@ -37,6 +64,9 @@
 
     <!-- Hero Section -->
     <section class="hero-section text-center">
+        <div class="video-background">
+            <iframe src="https://www.youtube.com/embed/IIjh5I34bxI?controls=0&autoplay=1&mute=1&loop=1&playlist=IIjh5I34bxI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
         <div class="container">
             <h1 class="display-4">Welcome to Red Dawn</h1>
             <p class="lead">Advanced Penetration Testing Platform</p>
