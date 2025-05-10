@@ -1,0 +1,263 @@
+{% extends "home/base.html" %}
+
+{% block title %}Services - RedEye C2 Framework{% endblock %}
+
+{% block extra_css %}
+<style>
+    .services-section {
+        min-height: 100vh;
+        padding: 7rem 2rem 2rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .service-card {
+        background: rgba(26, 26, 26, 0.8);
+        border: 1px solid var(--primary-color);
+        border-radius: 10px;
+        padding: 2rem;
+        height: 100%;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .service-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, 
+            rgba(255, 42, 109, 0.1) 0%,
+            rgba(5, 217, 232, 0.1) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 30px rgba(255, 42, 109, 0.3);
+    }
+
+    .service-card:hover::before {
+        opacity: 1;
+    }
+
+    .price-tag {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: var(--primary-color);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: bold;
+        box-shadow: 0 0 15px rgba(255, 42, 109, 0.5);
+    }
+
+    .feature-list {
+        list-style: none;
+        padding: 0;
+        margin: 1.5rem 0;
+    }
+
+    .feature-list li {
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .feature-list li i {
+        color: var(--accent-color);
+        margin-right: 10px;
+    }
+
+    .service-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .glowing-btn {
+        position: relative;
+        background: var(--primary-color);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .glowing-btn::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, 
+            var(--primary-color), 
+            var(--accent-color), 
+            var(--primary-color));
+        border-radius: 25px;
+        z-index: -1;
+        animation: glowing 1.5s ease infinite;
+    }
+
+    @keyframes glowing {
+        0% { opacity: 0.5; }
+        50% { opacity: 1; }
+        100% { opacity: 0.5; }
+    }
+
+    .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 3rem;
+        background: rgba(26, 26, 26, 0.8);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+        padding: 1rem;
+        text-align: center;
+        border: 1px solid rgba(255, 42, 109, 0.2);
+    }
+
+    .comparison-table th {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .comparison-table tr:hover {
+        background: rgba(255, 42, 109, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="services-section">
+    <!-- Header -->
+    <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-[var(--primary-color)] mb-4">Our Services</h1>
+        <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+            Choose the perfect plan for your security operations needs
+        </p>
+    </div>
+
+    <!-- Service Cards -->
+    <div class="service-grid mb-16">
+        <!-- Basic Plan -->
+        <div class="service-card">
+            <div class="price-tag">$99/mo</div>
+            <h3 class="text-2xl font-bold text-[var(--primary-color)] mb-3">Basic</h3>
+            <p class="text-[var(--accent-color)] mb-4">Perfect for small security teams</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-check"></i> Basic C2 Infrastructure</li>
+                <li><i class="fas fa-check"></i> Up to 10 concurrent agents</li>
+                <li><i class="fas fa-check"></i> Standard evasion techniques</li>
+                <li><i class="fas fa-check"></i> Email support</li>
+                <li><i class="fas fa-check"></i> Community updates</li>
+            </ul>
+            <button class="glowing-btn w-full">Get Started</button>
+        </div>
+
+        <!-- Pro Plan -->
+        <div class="service-card">
+            <div class="price-tag">$299/mo</div>
+            <h3 class="text-2xl font-bold text-[var(--primary-color)] mb-3">Professional</h3>
+            <p class="text-[var(--accent-color)] mb-4">Advanced features for serious pentesters</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-check"></i> Advanced C2 Infrastructure</li>
+                <li><i class="fas fa-check"></i> Up to 50 concurrent agents</li>
+                <li><i class="fas fa-check"></i> Advanced evasion techniques</li>
+                <li><i class="fas fa-check"></i> 24/7 Priority support</li>
+                <li><i class="fas fa-check"></i> Custom modules development</li>
+            </ul>
+            <button class="glowing-btn w-full">Upgrade Now</button>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="service-card">
+            <div class="price-tag">Custom</div>
+            <h3 class="text-2xl font-bold text-[var(--primary-color)] mb-3">Enterprise</h3>
+            <p class="text-[var(--accent-color)] mb-4">Full-scale security operations</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-check"></i> Custom C2 Infrastructure</li>
+                <li><i class="fas fa-check"></i> Unlimited concurrent agents</li>
+                <li><i class="fas fa-check"></i> Custom evasion techniques</li>
+                <li><i class="fas fa-check"></i> Dedicated support team</li>
+                <li><i class="fas fa-check"></i> Full source code access</li>
+            </ul>
+            <button class="glowing-btn w-full">Contact Us</button>
+        </div>
+    </div>
+
+    <!-- Feature Comparison -->
+    <div class="max-w-1200 mx-auto">
+        <h2 class="text-3xl font-bold text-center text-[var(--primary-color)] mb-6">Feature Comparison</h2>
+        <div class="overflow-x-auto">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Basic</th>
+                        <th>Professional</th>
+                        <th>Enterprise</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Concurrent Agents</td>
+                        <td>10</td>
+                        <td>50</td>
+                        <td>Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td>Custom Modules</td>
+                        <td><i class="fas fa-times text-red-500"></i></td>
+                        <td><i class="fas fa-check text-green-500"></i></td>
+                        <td><i class="fas fa-check text-green-500"></i></td>
+                    </tr>
+                    <tr>
+                        <td>API Access</td>
+                        <td><i class="fas fa-times text-red-500"></i></td>
+                        <td><i class="fas fa-check text-green-500"></i></td>
+                        <td><i class="fas fa-check text-green-500"></i></td>
+                    </tr>
+                    <tr>
+                        <td>Support SLA</td>
+                        <td>48h</td>
+                        <td>24h</td>
+                        <td>1h</td>
+                    </tr>
+                    <tr>
+                        <td>Custom Development</td>
+                        <td><i class="fas fa-times text-red-500"></i></td>
+                        <td><i class="fas fa-times text-red-500"></i></td>
+                        <td><i class="fas fa-check text-green-500"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="text-center mt-16">
+        <h2 class="text-2xl font-bold text-[var(--primary-color)] mb-4">Need a Custom Solution?</h2>
+        <p class="text-gray-300 mb-6">Contact our team for a personalized quote</p>
+        <button class="glowing-btn">
+            <i class="fas fa-envelope mr-2"></i>
+            Contact Sales
+        </button>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "home/base.html" %}
+
+{% block extra_css %}
+<style>
+    .hero {
+        min-height: 100vh;
+        position: relative;
+        padding-top: 5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: linear-gradient(45deg, rgba(255, 42, 109, 0.1), rgba(5, 217, 232, 0.1));
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 30%, rgba(255, 42, 109, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(5, 217, 232, 0.15) 0%, transparent 50%);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <div class="relative z-10">
+            <div class="text-6xl font-bold text-[var(--primary-color)] mb-6">
+                <i class="fas fa-shield-alt"></i>
+                RedEye C2
+            </div>
+            <h1 class="text-3xl md:text-4xl mb-8 text-white">Advanced Command & Control Framework</h1>
+            <p class="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+                Experience the next generation of penetration testing and security operations with our advanced C2 framework.
+            </p>
+            <div class="flex justify-center space-x-4">
+                <a href="/login" class="px-8 py-3 bg-[var(--primary-color)] text-white rounded-lg hover:bg-[var(--primary-color)]/80 transition-colors">
+                    Get Started
+                </a>
+                <a href="/documentation" class="px-8 py-3 border border-[var(--primary-color)] text-[var(--primary-color)] rounded-lg hover:bg-[var(--primary-color)] hover:text-white transition-colors">
+                    Documentation
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

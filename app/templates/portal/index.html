@@ -1,0 +1,268 @@
+{% extends "portal/base.html" %}
+{% block content %}
+<div class="space-y-6">
+    <!-- Welcome Header -->
+    <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-red/20">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-cyber-red">Welcome, {{ user }}</h1>
+                <p class="text-gray-400 font-mono">Session started: {{ datetime.now().strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm font-mono text-cyber-blue">API Token:</p>
+                <p class="font-mono text-gray-400">{{ "aas"[:8] }}...{{ "aas"[-8:] }}</p>
+            </div>
+        </div>
+    </div>
+
+    {% if user == "root" %}
+    <!-- Root User Dashboard -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Enumeration Stats -->
+        <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-blue/20">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-cyber-blue font-mono">ENUMERATION</h3>
+                <div class="w-2 h-2 rounded-full bg-cyber-blue animate-pulse"></div>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-gray-400">Active Scans</span>
+                        <span class="text-cyber-blue">12/50</span>
+                    </div>
+                    <div class="h-1 bg-gray-700 rounded-full overflow-hidden">
+                        <div class="h-full bg-cyber-blue" style="width: 24%"></div>
+                    </div>
+                </div>
+                <p class="text-2xl font-bold text-gray-300">1,284 <span class="text-sm text-gray-500">targets</span></p>
+            </div>
+        </div>
+
+        <!-- Exploitation Stats -->
+        <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-red/20">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-cyber-red font-mono">EXPLOITATION</h3>
+                <div class="w-2 h-2 rounded-full bg-cyber-red animate-pulse"></div>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-gray-400">Success Rate</span>
+                        <span class="text-cyber-red">78%</span>
+                    </div>
+                    <div class="h-1 bg-gray-700 rounded-full overflow-hidden">
+                        <div class="h-full bg-cyber-red" style="width: 78%"></div>
+                    </div>
+                </div>
+                <p class="text-2xl font-bold text-gray-300">892 <span class="text-sm text-gray-500">exploits</span></p>
+            </div>
+        </div>
+
+        <!-- Privilege Escalation Stats -->
+        <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-neon/20">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-cyber-neon font-mono">PRIV ESC</h3>
+                <div class="w-2 h-2 rounded-full bg-cyber-neon animate-pulse"></div>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-gray-400">Elevation Rate</span>
+                        <span class="text-cyber-neon">62%</span>
+                    </div>
+                    <div class="h-1 bg-gray-700 rounded-full overflow-hidden">
+                        <div class="h-full bg-cyber-neon" style="width: 62%"></div>
+                    </div>
+                </div>
+                <p class="text-2xl font-bold text-gray-300">445 <span class="text-sm text-gray-500">escalations</span></p>
+            </div>
+        </div>
+
+        <!-- AD Stats -->
+        <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-blue/20">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-cyber-blue font-mono">ACTIVE DIRECTORY</h3>
+                <div class="w-2 h-2 rounded-full bg-cyber-blue animate-pulse"></div>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="text-gray-400">Domain Coverage</span>
+                        <span class="text-cyber-blue">45%</span>
+                    </div>
+                    <div class="h-1 bg-gray-700 rounded-full overflow-hidden">
+                        <div class="h-full bg-cyber-blue" style="width: 45%"></div>
+                    </div>
+                </div>
+                <p class="text-2xl font-bold text-gray-300">238 <span class="text-sm text-gray-500">domains</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Timeline -->
+    <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-red/20">
+        <h3 class="text-lg font-bold text-cyber-red mb-4">Recent Activity</h3>
+        <div class="space-y-4">
+            {% for i in range(5) %}
+            <div class="flex items-center space-x-4">
+                <div class="w-2 h-2 rounded-full bg-cyber-red"></div>
+                <p class="text-gray-400 font-mono text-sm">[{{ datetime.now().strftime('%H:%M:%S') }}]</p>
+                <p class="text-gray-300">New exploitation attempt detected on target #{{ range(1000, 9999) | random }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% elif user == "enumerate" %}
+    <!-- Enumeration User Dashboard -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-blue/20">
+            <h3 class="text-cyber-blue font-mono mb-4">ACTIVE SCANS</h3>
+            <div class="space-y-4">
+                {% for i in range(3) %}
+                <div class="p-4 bg-cyber-darker rounded-lg border border-cyber-blue/10">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-300 font-mono">Target #{{ range(1000, 9999) | random }}</span>
+                        <span class="text-cyber-blue text-sm">{{ range(1, 100) | random }}%</span>
+                    </div>
+                    <div class="h-1 bg-gray-700 rounded-full overflow-hidden">
+                        <div class="h-full bg-cyber-blue" style="width: {{ range(1, 100) | random }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-blue/20">
+            <h3 class="text-cyber-blue font-mono mb-4">SCAN RESULTS</h3>
+            <div class="space-y-2">
+                {% for i in range(5) %}
+                <div class="flex items-center justify-between p-3 bg-cyber-darker rounded-lg">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-2 h-2 rounded-full bg-cyber-blue"></div>
+                        <span class="text-gray-300 font-mono">Port {{ range(1, 65535) | random }}</span>
+                    </div>
+                    <span class="text-cyber-blue text-sm">OPEN</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% elif user == "exploit" %}
+    <!-- Exploitation User Dashboard -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-red/20">
+            <h3 class="text-cyber-red font-mono mb-4">EXPLOIT TARGETS</h3>
+            <div class="space-y-4">
+                {% for i in range(4) %}
+                <div class="p-4 bg-cyber-darker rounded-lg border border-cyber-red/10">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-gray-300 font-mono">CVE-{{ range(2020, 2024) | random }}-{{ range(1000, 9999) | random }}</span>
+                        <span class="text-cyber-red text-sm">Critical</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">Target #{{ range(1000, 9999) | random }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-red/20">
+            <h3 class="text-cyber-red font-mono mb-4">SUCCESS RATE</h3>
+            <div class="relative pt-1">
+                <div class="flex mb-2 items-center justify-between">
+                    <div>
+                        <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-cyber-red bg-cyber-red/10">
+                            Today
+                        </span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-semibold inline-block text-cyber-red">
+                            78%
+                        </span>
+                    </div>
+                </div>
+                <div class="flex h-2 mb-4 overflow-hidden bg-cyber-red/10 rounded">
+                    <div style="width: 78%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-cyber-red"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% elif user == "privesc" %}
+    <!-- Privilege Escalation User Dashboard -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-neon/20">
+            <h3 class="text-cyber-neon font-mono mb-4">PRIVILEGE ESCALATION VECTORS</h3>
+            <div class="space-y-4">
+                {% for vector in ['SUDO Misconfiguration', 'Kernel Exploit', 'SUID Binary', 'Cron Job'] %}
+                <div class="p-4 bg-cyber-darker rounded-lg border border-cyber-neon/10">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-300 font-mono">{{ vector }}</span>
+                        <span class="text-cyber-neon text-sm">{{ range(1, 5) | random }} targets</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-neon/20">
+            <h3 class="text-cyber-neon font-mono mb-4">RECENT ESCALATIONS</h3>
+            <div class="space-y-3">
+                {% for i in range(5) %}
+                <div class="flex items-center space-x-4 p-3 bg-cyber-darker rounded-lg">
+                    <div class="w-2 h-2 rounded-full bg-cyber-neon"></div>
+                    <div>
+                        <p class="text-gray-300 font-mono">Target #{{ range(1000, 9999) | random }}</p>
+                        <p class="text-sm text-gray-500">{{ range(1, 60) | random }} minutes ago</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% elif user == "ad" %}
+    <!-- Active Directory User Dashboard -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-blue/20">
+            <h3 class="text-cyber-blue font-mono mb-4">DOMAIN STATISTICS</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="p-4 bg-cyber-darker rounded-lg text-center">
+                    <p class="text-gray-400 text-sm">Users</p>
+                    <p class="text-2xl font-bold text-cyber-blue">{{ range(100, 999) | random }}</p>
+                </div>
+                <div class="p-4 bg-cyber-darker rounded-lg text-center">
+                    <p class="text-gray-400 text-sm">Groups</p>
+                    <p class="text-2xl font-bold text-cyber-blue">{{ range(50, 199) | random }}</p>
+                </div>
+                <div class="p-4 bg-cyber-darker rounded-lg text-center">
+                    <p class="text-gray-400 text-sm">Computers</p>
+                    <p class="text-2xl font-bold text-cyber-blue">{{ range(200, 499) | random }}</p>
+                </div>
+                <div class="p-4 bg-cyber-darker rounded-lg text-center">
+                    <p class="text-gray-400 text-sm">Domain Admins</p>
+                    <p class="text-2xl font-bold text-cyber-blue">{{ range(3, 10) | random }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-cyber-dark/50 rounded-lg p-6 border border-cyber-blue/20">
+            <h3 class="text-cyber-blue font-mono mb-4">TRUST RELATIONSHIPS</h3>
+            <div class="space-y-3">
+                {% for i in range(4) %}
+                <div class="p-4 bg-cyber-darker rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-300 font-mono">DOMAIN-{{ range(1, 999) | random }}</span>
+                        <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-cyber-blue bg-cyber-blue/10">
+                            {{ ['Bidirectional', 'Incoming', 'Outgoing'] | random }}
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

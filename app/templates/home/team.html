@@ -1,0 +1,145 @@
+{% extends "home/base.html" %}
+
+{% block title %}Team - RedEye C2 Framework{% endblock %}
+
+{% block extra_css %}
+<style>
+    .team-section {
+        min-height: 100vh;
+        padding: 7rem 2rem 2rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .team-card {
+        background: rgba(26, 26, 26, 0.8);
+        border: 1px solid var(--primary-color);
+        border-radius: 10px;
+        padding: 2rem;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .team-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px var(--primary-color);
+    }
+
+    .avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin: 0 auto 1.5rem;
+        border: 3px solid var(--primary-color);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .avatar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 50%;
+        box-shadow: inset 0 0 20px var(--primary-color);
+    }
+
+    .social-links a {
+        color: var(--text-color);
+        margin: 0 10px;
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+        color: var(--primary-color);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="team-section">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-[var(--primary-color)] mb-4">Our Team</h1>
+        <p class="text-xl text-gray-300 max-w-2xl mx-auto">Meet the elite team behind RedEye C2 Framework</p>
+    </div>
+
+    <div class="team-grid">
+        <!-- Team Member 1 -->
+        <div class="team-card">
+            <div class="avatar">
+                <img src="https://media.licdn.com/dms/image/v2/D4E03AQHlnv21qUtgPg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1712918671835?e=1752105600&v=beta&t=IM56yew-XOG4VKqR41Pxyw3pbqHA8TSoaidEK5zLKPQ" alt="Team Member 1">
+            </div>
+            <h3 class="text-2xl font-bold text-[var(--primary-color)] mb-2">Phantom</h3>
+            <p class="text-[var(--accent-color)] mb-3">Lead Pentester | Security Researcher </p>
+            <p class="text-gray-300 mb-4">Backend architecture specialist and security researcher</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+
+        <!-- Team Member 2 -->
+        <div class="team-card">
+            <div class="avatar">
+                <img src="https://media.licdn.com/dms/image/v2/D4E03AQGDQsJgbTgqYg/profile-displayphoto-shrink_400_400/B4EZWJWO8HHMAg-/0/1741766063836?e=1752105600&v=beta&t=U77WgcVd-UQDCASipF8Paomg-BA0Ty0ZZEeddLTmWhI" alt="Team Member 2">
+            </div>
+            <h3 class="text-2xl font-bold text-[var(--primary-color)] mb-2">Shadow</h3>
+            <p class="text-[var(--accent-color)] mb-3"> Mentor in the HackTheBaku Team  </p>
+            <p class="text-gray-300 mb-4">UI/UX specialist with focus on secure interface design</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+
+        <!-- Team Member 3 -->
+        <div class="team-card">
+            <div class="avatar">
+                <img src="https://media.licdn.com/dms/image/v2/C5603AQEAtqByAjaWQQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1629783953589?e=1752105600&v=beta&t=KWjW-ME5cA86jAZulPcDGzsCZwTRfTm7gilTg8UkiOc" alt="Team Member 3">
+            </div>
+            <h3 class="text-2xl font-bold text-[var(--primary-color)] mb-2">Cipher</h3>
+            <p class="text-[var(--accent-color)] mb-3">Security Expert</p>
+            <p class="text-gray-300 mb-4">Cryptography and network security specialist</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+
+        <!-- Team Member 4 -->
+        <div class="team-card">
+            <div class="avatar">
+                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Team Member 4">
+            </div>
+            <h3 class="text-2xl font-bold text-[var(--primary-color)] mb-2">Nova</h3>
+            <p class="text-[var(--accent-color)] mb-3">DevOps Engineer</p>
+            <p class="text-gray-300 mb-4">Infrastructure and automation specialist</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

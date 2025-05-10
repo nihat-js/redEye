@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}RedEye C2 Framework{% endblock %}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-color: #ff2a6d;
+            --secondary-color: #1a1a1a;
+            --accent-color: #05d9e8;
+            --text-color: #ffffff;
+            --bg-color: #0a0a0a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(255, 42, 109, 0.2);
+        }
+
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .matrix-rain canvas {
+            opacity: 0.15;
+            filter: brightness(1.2) contrast(1.5);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="matrix-rain">
+        <canvas id="matrix"></canvas>
+    </div>
+
+    <nav class="navbar">
+        <div class="px-4 mx-auto">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-8">
+                    <a href="/" class="text-xl font-bold text-[var(--primary-color)] hover:text-[var(--accent-color)] transition-colors">RedEye C2</a>
+                    <div class="hidden md:flex space-x-4">
+                        <a href="/services" class="text-gray-300 hover:text-[var(--primary-color)]">Services</a>
+                        <a href="/about" class="text-gray-300 hover:text-[var(--primary-color)]">About</a>
+                        <a href="/team" class="text-gray-300 hover:text-[var(--primary-color)]">Team</a>
+                    </div>
+                </div>
+                <a href="/login" class="flex items-center space-x-2 border border-[var(--primary-color)] text-[var(--primary-color)] px-4 py-2 rounded hover:bg-[var(--primary-color)] hover:text-white transition-colors">
+                    <span>Access Portal</span>
+                    <i class="fas fa-terminal"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <script>
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        setCanvasSize();
+        window.addEventListener('resize', setCanvasSize);
+
+        const chars = '01011001010110101010001011011100010110101010111001010';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        const colors = ['#0f0', '#00ff9d', '#00ffbb', '#00ffd9'];
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                ctx.fillStyle = color;
+                ctx.font = fontSize + 'px monospace';
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        function animate() {
+            draw();
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

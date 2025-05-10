@@ -1,0 +1,241 @@
+{% extends "portal/base.html" %}
+
+{% block title %}Privilege Escalation - RedEye C2 Framework{% endblock %}
+
+{% block content %}
+<section class="p-6">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold text-cyber-red mb-2">Privilege Escalation Analysis</h1>
+        <p class="text-gray-400">System permissions and vulnerability assessment</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-4">
+            <div class="text-cyber-red text-sm mb-1">Vulnerable Services</div>
+            <div class="text-2xl font-bold">24</div>
+        </div>
+        <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-4">
+            <div class="text-cyber-red text-sm mb-1">SUID Binaries</div>
+            <div class="text-2xl font-bold">156</div>
+        </div>
+        <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-4">
+            <div class="text-cyber-red text-sm mb-1">Weak Permissions</div>
+            <div class="text-2xl font-bold">89</div>
+        </div>
+        <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-4">
+            <div class="text-cyber-red text-sm mb-1">Success Rate</div>
+            <div class="text-2xl font-bold">67%</div>
+        </div>
+    </div>
+
+    <!-- PrivEsc Analysis Results -->
+    {% for target in [
+        {
+            "id": "PRIV-001",
+            "hostname": "WEB-SERVER-01",
+            "timestamp": "2024-03-20 14:30",
+            "operator": "privesc",
+            "data": {
+                "system_info": {
+                    "os": "Ubuntu 20.04 LTS",
+                    "kernel": "5.4.0-42-generic",
+                    "architecture": "x64",
+                    "current_user": "www-data"
+                },
+                "vulnerable_services": [
+                    {"name": "mysql", "version": "5.7.32", "exploit": "CVE-2021-1234", "status": "Exploitable"},
+                    {"name": "apache2", "version": "2.4.41", "exploit": "CVE-2021-5678", "status": "Exploitable"},
+                    {"name": "ssh", "version": "7.6p1", "exploit": "Local Exploit", "status": "In Progress"}
+                ],
+                "suid_binaries": [
+                    {"path": "/usr/bin/sudo", "permissions": "4755", "risk": "High"},
+                    {"path": "/usr/bin/pkexec", "permissions": "4755", "risk": "Critical"},
+                    {"path": "/usr/bin/passwd", "permissions": "4755", "risk": "Medium"}
+                ],
+                "weak_permissions": [
+                    {"path": "/etc/shadow", "current": "644", "expected": "400", "risk": "Critical"},
+                    {"path": "/var/www/config.php", "current": "666", "expected": "640", "risk": "High"},
+                    {"path": "/home/user/.ssh", "current": "777", "expected": "600", "risk": "High"}
+                ]
+            }
+        },
+        {
+            "id": "PRIV-002",
+            "hostname": "DC-SERVER-01",
+            "timestamp": "2024-03-20 15:45",
+            "operator": "privesc",
+            "data": {
+                "system_info": {
+                    "os": "Windows Server 2019",
+                    "kernel": "10.0.17763",
+                    "architecture": "x64",
+                    "current_user": "IIS APPPOOL\\DefaultAppPool"
+                },
+                "vulnerable_services": [
+                    {"name": "spoolsv", "version": "10.0.17763.1", "exploit": "PrintNightmare", "status": "Exploitable"},
+                    {"name": "RpcSs", "version": "10.0.17763.1", "exploit": "Local Exploit", "status": "In Progress"}
+                ],
+                "weak_permissions": [
+                    {"path": "C:\\inetpub\\wwwroot\\web.config", "current": "Everyone:F", "expected": "IIS_IUSRS:R", "risk": "High"},
+                    {"path": "C:\\Program Files\\Vulnerable App", "current": "Users:F", "expected": "Admins:F", "risk": "High"}
+                ],
+                "scheduled_tasks": [
+                    {"name": "Backup Task", "runs_as": "SYSTEM", "vulnerable": true, "risk": "Critical"},
+                    {"name": "Cleanup", "runs_as": "Administrator", "vulnerable": true, "risk": "High"}
+                ]
+            }
+        }
+    ] %}
+    <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg mb-6 overflow-hidden">
+        <!-- Target Header -->
+        <div class="p-4 border-b border-cyber-red/20 flex justify-between items-center">
+            <div>
+                <span class="text-cyber-red font-mono">{{ target.id }}</span>
+                <span class="text-xl text-cyber-blue ml-4">{{ target.hostname }}</span>
+                <span class="text-gray-400 text-sm ml-4">{{ target.timestamp }}</span>
+                <span class="bg-cyber-red/20 text-cyber-red px-2 py-1 rounded text-sm ml-4">{{ target.operator }}</span>
+            </div>
+            <button class="text-cyber-red hover:bg-cyber-red/20 p-2 rounded transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Target Content -->
+        <div class="p-4">
+            <!-- System Info -->
+            <div class="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {% for key, value in target.data.system_info.items() %}
+                <div class="bg-cyber-dark/30 p-4 rounded-lg border border-cyber-red/20">
+                    <div class="text-cyber-red text-sm mb-1">{{ key | title }}</div>
+                    <div class="font-mono">{{ value }}</div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Vulnerable Services -->
+            {% if target.data.vulnerable_services %}
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-cyber-red mb-3">Vulnerable Services</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="text-left">
+                            <tr class="border-b border-cyber-red/20">
+                                <th class="p-2">Service</th>
+                                <th class="p-2">Version</th>
+                                <th class="p-2">Exploit</th>
+                                <th class="p-2">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for service in target.data.vulnerable_services %}
+                            <tr class="border-b border-cyber-red/10 hover:bg-cyber-red/5">
+                                <td class="p-2">{{ service.name }}</td>
+                                <td class="p-2 font-mono">{{ service.version }}</td>
+                                <td class="p-2">{{ service.exploit }}</td>
+                                <td class="p-2">
+                                    <span class="px-2 py-1 rounded text-xs 
+                                        {% if service.status == 'Exploitable' %}bg-green-500/20 text-green-500
+                                        {% else %}bg-yellow-500/20 text-yellow-500{% endif %}">
+                                        {{ service.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- SUID Binaries -->
+            {% if target.data.suid_binaries %}
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-cyber-red mb-3">SUID Binaries</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {% for binary in target.data.suid_binaries %}
+                    <div class="bg-cyber-dark/30 p-4 rounded-lg border border-cyber-red/20">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-mono text-sm">{{ binary.path }}</span>
+                            <span class="text-xs 
+                                {% if binary.risk == 'Critical' %}bg-red-500/20 text-red-500
+                                {% elif binary.risk == 'High' %}bg-orange-500/20 text-orange-500
+                                {% else %}bg-yellow-500/20 text-yellow-500{% endif %}
+                                px-2 py-1 rounded">
+                                {{ binary.risk }}
+                            </span>
+                        </div>
+                        <div class="text-sm text-cyber-blue">Permissions: {{ binary.permissions }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Weak Permissions -->
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-cyber-red mb-3">Weak Permissions</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="text-left">
+                            <tr class="border-b border-cyber-red/20">
+                                <th class="p-2">Path</th>
+                                <th class="p-2">Current</th>
+                                <th class="p-2">Expected</th>
+                                <th class="p-2">Risk</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for perm in target.data.weak_permissions %}
+                            <tr class="border-b border-cyber-red/10 hover:bg-cyber-red/5">
+                                <td class="p-2 font-mono text-sm">{{ perm.path }}</td>
+                                <td class="p-2">{{ perm.current }}</td>
+                                <td class="p-2">{{ perm.expected }}</td>
+                                <td class="p-2">
+                                    <span class="px-2 py-1 rounded text-xs 
+                                        {% if perm.risk == 'Critical' %}bg-red-500/20 text-red-500
+                                        {% elif perm.risk == 'High' %}bg-orange-500/20 text-orange-500
+                                        {% else %}bg-yellow-500/20 text-yellow-500{% endif %}">
+                                        {{ perm.risk }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Scheduled Tasks (Windows Only) -->
+            {% if target.data.scheduled_tasks %}
+            <div>
+                <h3 class="text-lg font-bold text-cyber-red mb-3">Scheduled Tasks</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {% for task in target.data.scheduled_tasks %}
+                    <div class="bg-cyber-dark/30 p-4 rounded-lg border border-cyber-red/20">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-cyber-blue">{{ task.name }}</span>
+                            <span class="text-xs 
+                                {% if task.risk == 'Critical' %}bg-red-500/20 text-red-500
+                                {% else %}bg-orange-500/20 text-orange-500{% endif %}
+                                px-2 py-1 rounded">
+                                {{ task.risk }}
+                            </span>
+                        </div>
+                        <div class="text-sm">Runs as: {{ task.runs_as }}</div>
+                        {% if task.vulnerable %}
+                        <div class="mt-2 text-xs text-red-500">Vulnerable to Hijacking</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}

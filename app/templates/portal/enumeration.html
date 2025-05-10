@@ -1,0 +1,191 @@
+{% extends "portal/base.html" %}
+
+{% block title %}Enumeration - RedEye C2 Framework{% endblock %}
+
+{% block content %}
+<section class="p-6">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold text-cyber-red mb-2">Enumeration Data</h1>
+        <p class="text-gray-400">Network reconnaissance and information gathering results</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-4">
+            <div class="text-cyber-red text-sm mb-1">Total Hosts</div>
+            <div class="text-2xl font-bold">156</div>
+        </div>
+        <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-4">
+            <div class="text-cyber-red text-sm mb-1">Active Services</div>
+            <div class="text-2xl font-bold">482</div>
+        </div>
+        <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-4">
+            <div class="text-cyber-red text-sm mb-1">Vulnerabilities</div>
+            <div class="text-2xl font-bold">23</div>
+        </div>
+        <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-4">
+            <div class="text-cyber-red text-sm mb-1">Critical Issues</div>
+            <div class="text-2xl font-bold">7</div>
+        </div>
+    </div>
+
+    <!-- Enumeration Entries -->
+    {% for entry in [
+        {
+            "id": "ENUM-001",
+            "timestamp": "2024-03-20 14:30",
+            "operator": "enumerate",
+            "data": {
+                "live_hosts": ["192.168.1.100", "192.168.1.101", "192.168.1.102"],
+                "open_ports": {
+                    "192.168.1.100": [80, 443, 22],
+                    "192.168.1.101": [21, 22, 3306],
+                    "192.168.1.102": [80, 8080, 3389]
+                },
+                "services": [
+                    {"name": "Apache", "host": "192.168.1.100", "port": 80, "status": "Running"},
+                    {"name": "MySQL", "host": "192.168.1.101", "port": 3306, "status": "Running"},
+                    {"name": "RDP", "host": "192.168.1.102", "port": 3389, "status": "Running"}
+                ],
+                "vulnerabilities": [
+                    {"CVE": "CVE-2024-1234", "service": "Apache", "severity": "High", "status": "Unpatched"},
+                    {"CVE": "CVE-2024-5678", "service": "MySQL", "severity": "Medium", "status": "In Progress"}
+                ]
+            }
+        },
+        {
+            "id": "ENUM-002",
+            "timestamp": "2024-03-20 15:45",
+            "operator": "enumerate",
+            "data": {
+                "live_hosts": ["192.168.1.200", "192.168.1.201"],
+                "open_ports": {
+                    "192.168.1.200": [80, 443, 25],
+                    "192.168.1.201": [22, 161, 162]
+                },
+                "services": [
+                    {"name": "Exchange", "host": "192.168.1.200", "port": 25, "status": "Running"},
+                    {"name": "SNMP", "host": "192.168.1.201", "port": 161, "status": "Running"}
+                ],
+                "vulnerabilities": [
+                    {"CVE": "CVE-2024-9012", "service": "Exchange", "severity": "Critical", "status": "Unpatched"}
+                ]
+            }
+        }
+    ] %}
+    <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg mb-6 overflow-hidden">
+        <!-- Entry Header -->
+        <div class="p-4 border-b border-cyber-red/20 flex justify-between items-center">
+            <div>
+                <span class="text-cyber-red font-mono">{{ entry.id }}</span>
+                <span class="text-gray-400 text-sm ml-4">{{ entry.timestamp }}</span>
+                <span class="bg-cyber-red/20 text-cyber-red px-2 py-1 rounded text-sm ml-4">{{ entry.operator }}</span>
+            </div>
+            <button class="text-cyber-red hover:bg-cyber-red/20 p-2 rounded transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Entry Content -->
+        <div class="p-4">
+            <!-- Live Hosts -->
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-cyber-red mb-3">Live Hosts</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                    {% for host in entry.data.live_hosts %}
+                    <div class="bg-cyber-dark/30 p-2 rounded font-mono text-sm">{{ host }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Open Ports -->
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-cyber-red mb-3">Open Ports</h3>
+                {% for host, ports in entry.data.open_ports.items() %}
+                <div class="mb-2">
+                    <span class="font-mono text-sm">{{ host }}:</span>
+                    <span class="text-cyber-blue ml-2">{{ ports | join(', ') }}</span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Services -->
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-cyber-red mb-3">Services</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="text-left">
+                            <tr class="border-b border-cyber-red/20">
+                                <th class="p-2">Service</th>
+                                <th class="p-2">Host</th>
+                                <th class="p-2">Port</th>
+                                <th class="p-2">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for service in entry.data.services %}
+                            <tr class="border-b border-cyber-red/10 hover:bg-cyber-red/5">
+                                <td class="p-2">{{ service.name }}</td>
+                                <td class="p-2 font-mono">{{ service.host }}</td>
+                                <td class="p-2">{{ service.port }}</td>
+                                <td class="p-2">
+                                    <span class="px-2 py-1 rounded text-xs 
+                                        {% if service.status == 'Running' %}bg-green-500/20 text-green-500
+                                        {% else %}bg-red-500/20 text-red-500{% endif %}">
+                                        {{ service.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Vulnerabilities -->
+            <div>
+                <h3 class="text-lg font-bold text-cyber-red mb-3">Vulnerabilities</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="text-left">
+                            <tr class="border-b border-cyber-red/20">
+                                <th class="p-2">CVE</th>
+                                <th class="p-2">Service</th>
+                                <th class="p-2">Severity</th>
+                                <th class="p-2">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for vuln in entry.data.vulnerabilities %}
+                            <tr class="border-b border-cyber-red/10 hover:bg-cyber-red/5">
+                                <td class="p-2 font-mono">{{ vuln.CVE }}</td>
+                                <td class="p-2">{{ vuln.service }}</td>
+                                <td class="p-2">
+                                    <span class="px-2 py-1 rounded text-xs
+                                        {% if vuln.severity == 'Critical' %}bg-red-500/20 text-red-500
+                                        {% elif vuln.severity == 'High' %}bg-orange-500/20 text-orange-500
+                                        {% else %}bg-yellow-500/20 text-yellow-500{% endif %}">
+                                        {{ vuln.severity }}
+                                    </span>
+                                </td>
+                                <td class="p-2">
+                                    <span class="px-2 py-1 rounded text-xs
+                                        {% if vuln.status == 'Unpatched' %}bg-red-500/20 text-red-500
+                                        {% else %}bg-yellow-500/20 text-yellow-500{% endif %}">
+                                        {{ vuln.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}

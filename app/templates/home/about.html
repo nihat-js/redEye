@@ -1,0 +1,223 @@
+{% extends "home/base.html" %}
+
+{% block title %}About - RedEye C2 Framework{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-section {
+        min-height: 100vh;
+        padding: 7rem 2rem 2rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .about-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 4rem auto;
+    }
+
+    .about-card {
+        background: rgba(26, 26, 26, 0.8);
+        border: 1px solid var(--primary-color);
+        border-radius: 10px;
+        padding: 2rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .about-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px var(--primary-color);
+    }
+
+    .stat-counter {
+        background: rgba(255, 42, 109, 0.1);
+        border: 1px solid var(--primary-color);
+        border-radius: 10px;
+        padding: 2rem;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .stat-counter:hover {
+        transform: scale(1.05);
+    }
+
+    .timeline {
+        position: relative;
+        max-width: 800px;
+        margin: 4rem auto;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        width: 2px;
+        height: 100%;
+        background: var(--primary-color);
+    }
+
+    .timeline-item {
+        margin-bottom: 3rem;
+        position: relative;
+    }
+
+    .timeline-content {
+        background: rgba(26, 26, 26, 0.8);
+        border: 1px solid var(--primary-color);
+        border-radius: 10px;
+        padding: 1.5rem;
+        width: calc(50% - 2rem);
+        position: relative;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content {
+        margin-left: auto;
+    }
+
+    .timeline-content::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        height: 20px;
+        background: var(--primary-color);
+        border-radius: 50%;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content::before {
+        left: -60px;
+    }
+
+    .timeline-item:nth-child(even) .timeline-content::before {
+        right: -60px;
+    }
+
+    .highlight-text {
+        background: linear-gradient(120deg, var(--primary-color) 0%, var(--accent-color) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    @media (max-width: 768px) {
+        .timeline::before {
+            left: 30px;
+        }
+
+        .timeline-content {
+            width: calc(100% - 60px);
+            margin-left: 60px !important;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::before,
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -40px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="about-section">
+    <!-- Hero Section -->
+    <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-[var(--primary-color)] mb-4">About RedEye C2</h1>
+        <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+            A next-generation Command & Control framework designed for security professionals, 
+            penetration testers, and red team operations.
+        </p>
+    </div>
+
+    <!-- Key Features -->
+    <div class="about-grid">
+        <div class="about-card">
+            <div class="text-3xl mb-4 text-[var(--primary-color)]">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3 class="text-xl font-bold text-[var(--primary-color)] mb-3">Advanced Security</h3>
+            <p class="text-gray-300">
+                Built with security-first approach, implementing military-grade encryption 
+                and advanced evasion techniques to ensure operational security.
+            </p>
+        </div>
+
+        <div class="about-card">
+            <div class="text-3xl mb-4 text-[var(--primary-color)]">
+                <i class="fas fa-code"></i>
+            </div>
+            <h3 class="text-xl font-bold text-[var(--primary-color)] mb-3">Modern Architecture</h3>
+            <p class="text-gray-300">
+                Leveraging cutting-edge technologies and frameworks to provide a robust, 
+                scalable, and maintainable solution.
+            </p>
+        </div>
+
+        <div class="about-card">
+            <div class="text-3xl mb-4 text-[var(--primary-color)]">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3 class="text-xl font-bold text-[var(--primary-color)] mb-3">Community Driven</h3>
+            <p class="text-gray-300">
+                Open source at heart, built by the community for the community, 
+                with regular updates and active development.
+            </p>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-1200 mx-auto my-16">
+        <div class="stat-counter">
+            <div class="text-4xl font-bold text-[var(--primary-color)] mb-2">5000+</div>
+            <div class="text-gray-300">Active Users</div>
+        </div>
+        <div class="stat-counter">
+            <div class="text-4xl font-bold text-[var(--primary-color)] mb-2">150+</div>
+            <div class="text-gray-300">Countries</div>
+        </div>
+        <div class="stat-counter">
+            <div class="text-4xl font-bold text-[var(--primary-color)] mb-2">99.9%</div>
+            <div class="text-gray-300">Uptime</div>
+        </div>
+        <div class="stat-counter">
+            <div class="text-4xl font-bold text-[var(--primary-color)] mb-2">24/7</div>
+            <div class="text-gray-300">Support</div>
+        </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <h3 class="text-xl font-bold text-[var(--primary-color)] mb-2">2023</h3>
+                <p class="text-gray-300">Launch of RedEye C2 Framework with core features and community edition</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <h3 class="text-xl font-bold text-[var(--primary-color)] mb-2">2024</h3>
+                <p class="text-gray-300">Major update with advanced evasion techniques and expanded toolkit</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <h3 class="text-xl font-bold text-[var(--primary-color)] mb-2">2025</h3>
+                <p class="text-gray-300">Integration of AI-powered threat detection and response capabilities</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission Statement -->
+    <div class="max-w-3xl mx-auto text-center mt-16">
+        <h2 class="text-3xl font-bold highlight-text mb-4">Our Mission</h2>
+        <p class="text-gray-300 text-lg">
+            To provide security professionals with the most advanced, reliable, and ethical 
+            penetration testing framework, enabling them to identify and address security 
+            vulnerabilities effectively while maintaining the highest standards of operational security.
+        </p>
+    </div>
+</section>
+{% endblock %}

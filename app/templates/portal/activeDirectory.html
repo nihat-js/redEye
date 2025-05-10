@@ -1,0 +1,214 @@
+{% extends "portal/base.html" %}
+
+{% block title %}Active Directory - RedEye C2 Framework{% endblock %}
+
+{% block content %}
+<section class="p-6">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold text-cyber-red mb-2">Active Directory Intelligence</h1>
+        <p class="text-gray-400">Domain enumeration and analysis results</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-4">
+            <div class="text-cyber-red text-sm mb-1">Total Users</div>
+            <div class="text-2xl font-bold">1,247</div>
+        </div>
+        <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-4">
+            <div class="text-cyber-red text-sm mb-1">Admin Accounts</div>
+            <div class="text-2xl font-bold">42</div>
+        </div>
+        <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-4">
+            <div class="text-cyber-red text-sm mb-1">Security Groups</div>
+            <div class="text-2xl font-bold">156</div>
+        </div>
+        <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-4">
+            <div class="text-cyber-red text-sm mb-1">Domain Controllers</div>
+            <div class="text-2xl font-bold">4</div>
+        </div>
+    </div>
+
+    <!-- AD Analysis Results -->
+    {% for domain in [
+        {
+            "id": "AD-001",
+            "name": "CORP.CONTOSO.COM",
+            "timestamp": "2024-03-20 14:30",
+            "operator": "ad",
+            "data": {
+                "domain_controllers": [
+                    {"hostname": "DC01", "ip": "192.168.1.10", "roles": ["Primary DC", "DNS"], "status": "Online"},
+                    {"hostname": "DC02", "ip": "192.168.1.11", "roles": ["Backup DC", "DHCP"], "status": "Online"},
+                    {"hostname": "DC03", "ip": "192.168.2.10", "roles": ["Read-Only DC"], "status": "Offline"}
+                ],
+                "privileged_accounts": [
+                    {"username": "admin.smith", "groups": ["Domain Admins", "Enterprise Admins"], "last_login": "2024-03-20 13:45"},
+                    {"username": "admin.jones", "groups": ["Domain Admins"], "last_login": "2024-03-20 12:30"},
+                    {"username": "svc.backup", "groups": ["Backup Operators"], "last_login": "2024-03-20 10:15"}
+                ],
+                "security_groups": [
+                    {"name": "Domain Admins", "members": 5, "risk_level": "Critical"},
+                    {"name": "Enterprise Admins", "members": 3, "risk_level": "Critical"},
+                    {"name": "Backup Operators", "members": 8, "risk_level": "High"}
+                ],
+                "vulnerabilities": [
+                    {"type": "Kerberoasting", "affected_accounts": 12, "severity": "High"},
+                    {"type": "ASREP Roasting", "affected_accounts": 5, "severity": "High"},
+                    {"type": "Password Not Required", "affected_accounts": 23, "severity": "Critical"}
+                ]
+            }
+        },
+        {
+            "id": "AD-002",
+            "name": "EMEA.CONTOSO.COM",
+            "timestamp": "2024-03-20 15:45",
+            "operator": "ad",
+            "data": {
+                "domain_controllers": [
+                    {"hostname": "EMEA-DC01", "ip": "192.168.10.10", "roles": ["Primary DC", "DNS"], "status": "Online"},
+                    {"hostname": "EMEA-DC02", "ip": "192.168.10.11", "roles": ["Backup DC"], "status": "Online"}
+                ],
+                "privileged_accounts": [
+                    {"username": "admin.weber", "groups": ["Domain Admins"], "last_login": "2024-03-20 14:20"},
+                    {"username": "svc.exchange", "groups": ["Exchange Admins"], "last_login": "2024-03-20 11:45"}
+                ],
+                "security_groups": [
+                    {"name": "Domain Admins", "members": 3, "risk_level": "Critical"},
+                    {"name": "Exchange Admins", "members": 5, "risk_level": "High"}
+                ],
+                "vulnerabilities": [
+                    {"type": "LDAP Signing Not Required", "affected_accounts": "N/A", "severity": "High"},
+                    {"type": "Weak Password Policy", "affected_accounts": "All", "severity": "High"}
+                ]
+            }
+        }
+    ] %}
+    <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg mb-6 overflow-hidden">
+        <!-- Domain Header -->
+        <div class="p-4 border-b border-cyber-red/20 flex justify-between items-center">
+            <div>
+                <span class="text-cyber-red font-mono">{{ domain.id }}</span>
+                <span class="text-xl text-cyber-blue ml-4">{{ domain.name }}</span>
+                <span class="text-gray-400 text-sm ml-4">{{ domain.timestamp }}</span>
+                <span class="bg-cyber-red/20 text-cyber-red px-2 py-1 rounded text-sm ml-4">{{ domain.operator }}</span>
+            </div>
+            <button class="text-cyber-red hover:bg-cyber-red/20 p-2 rounded transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Domain Content -->
+        <div class="p-4">
+            <!-- Domain Controllers -->
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-cyber-red mb-3">Domain Controllers</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {% for dc in domain.data.domain_controllers %}
+                    <div class="bg-cyber-dark/30 p-4 rounded-lg border border-cyber-red/20">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-cyber-blue font-bold">{{ dc.hostname }}</span>
+                            <span class="text-xs {% if dc.status == 'Online' %}bg-green-500/20 text-green-500{% else %}bg-red-500/20 text-red-500{% endif %} px-2 py-1 rounded">
+                                {{ dc.status }}
+                            </span>
+                        </div>
+                        <div class="font-mono text-sm mb-2">{{ dc.ip }}</div>
+                        <div class="flex flex-wrap gap-2">
+                            {% for role in dc.roles %}
+                            <span class="text-xs bg-cyber-blue/20 text-cyber-blue px-2 py-1 rounded">{{ role }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Privileged Accounts -->
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-cyber-red mb-3">Privileged Accounts</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="text-left">
+                            <tr class="border-b border-cyber-red/20">
+                                <th class="p-2">Username</th>
+                                <th class="p-2">Groups</th>
+                                <th class="p-2">Last Login</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for account in domain.data.privileged_accounts %}
+                            <tr class="border-b border-cyber-red/10 hover:bg-cyber-red/5">
+                                <td class="p-2 font-mono">{{ account.username }}</td>
+                                <td class="p-2">
+                                    {% for group in account.groups %}
+                                    <span class="inline-block px-2 py-1 text-xs bg-cyber-red/20 text-cyber-red rounded mr-1 mb-1">{{ group }}</span>
+                                    {% endfor %}
+                                </td>
+                                <td class="p-2 text-sm">{{ account.last_login }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Security Groups -->
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-cyber-red mb-3">Security Groups</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="text-left">
+                            <tr class="border-b border-cyber-red/20">
+                                <th class="p-2">Group Name</th>
+                                <th class="p-2">Members</th>
+                                <th class="p-2">Risk Level</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for group in domain.data.security_groups %}
+                            <tr class="border-b border-cyber-red/10 hover:bg-cyber-red/5">
+                                <td class="p-2">{{ group.name }}</td>
+                                <td class="p-2">{{ group.members }}</td>
+                                <td class="p-2">
+                                    <span class="px-2 py-1 rounded text-xs 
+                                        {% if group.risk_level == 'Critical' %}bg-red-500/20 text-red-500
+                                        {% elif group.risk_level == 'High' %}bg-orange-500/20 text-orange-500
+                                        {% else %}bg-yellow-500/20 text-yellow-500{% endif %}">
+                                        {{ group.risk_level }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Vulnerabilities -->
+            <div>
+                <h3 class="text-lg font-bold text-cyber-red mb-3">Vulnerabilities</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {% for vuln in domain.data.vulnerabilities %}
+                    <div class="bg-cyber-dark/30 p-4 rounded-lg border border-cyber-red/20">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-cyber-blue">{{ vuln.type }}</span>
+                            <span class="text-xs 
+                                {% if vuln.severity == 'Critical' %}bg-red-500/20 text-red-500
+                                {% else %}bg-orange-500/20 text-orange-500{% endif %} 
+                                px-2 py-1 rounded">
+                                {{ vuln.severity }}
+                            </span>
+                        </div>
+                        <div class="text-sm">Affected: {{ vuln.affected_accounts }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}
