@@ -4,251 +4,247 @@
 
 {% block content %}
 <section class="p-6">
-    <!-- Header -->
-    <div class="mb-8">
-        <h1 class="text-4xl font-bold text-cyber-red mb-2">File Manager</h1>
-        <p class="text-gray-400">Upload and manage your files</p>
-    </div>
+	<!-- Header -->
+	<div class="mb-8">
+		<h1 class="text-4xl font-bold text-cyber-red mb-2">File Manager</h1>
+		<p class="text-gray-400">Upload and manage your files</p>
+	</div>
 
-    <!-- Upload Section -->
-    <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-6 mb-8">
-        <div class="max-w-xl mx-auto">
-            <form id="uploadForm" class="space-y-4">
-                <!-- File Drop Zone -->
-                <div class="flex items-center justify-center w-full">
-                    <label id="dropZone"
-                           class="flex flex-col w-full h-32 border-2 border-cyber-red/20 border-dashed rounded-lg cursor-pointer hover:bg-cyber-red/5 transition-all">
-                        <div id="defaultUploadState" class="flex flex-col items-center justify-center pt-7">
-                            <svg class="w-8 h-8 text-cyber-red mb-2" fill="none" stroke="currentColor"
-                                 viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-                            </svg>
-                            <p class="text-sm text-gray-400">
-                                <span class="text-cyber-red">Click to upload</span> or drag and drop
-                            </p>
-                            <p class="text-xs text-gray-400 mt-1">Maximum file size: 50MB</p>
-                        </div>
+	<!-- Upload Section -->
+	<div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-6 mb-8">
+		<div class="max-w-xl mx-auto">
+			<form id="uploadForm" class="space-y-4">
+				<!-- File Drop Zone -->
+				<div class="flex items-center justify-center w-full">
+					<label id="dropZone"
+						class="flex flex-col w-full h-32 border-2 border-cyber-red/20 border-dashed rounded-lg cursor-pointer hover:bg-cyber-red/5 transition-all">
+						<div id="defaultUploadState" class="flex flex-col items-center justify-center pt-7">
+							<svg class="w-8 h-8 text-cyber-red mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+							</svg>
+							<p class="text-sm text-gray-400">
+								<span class="text-cyber-red">Click to upload</span> or drag and drop
+							</p>
+							<p class="text-xs text-gray-400 mt-1">Maximum file size: 50MB</p>
+						</div>
 
-                        <!-- File Preview State (Hidden by default) -->
-                        <div id="filePreview" class="hidden flex-col items-center justify-center h-full p-4">
-                            <div class="flex items-center space-x-4 mb-2">
-                                <svg class="w-8 h-8 text-cyber-blue" fill="none" stroke="currentColor"
-                                     viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                                </svg>
-                                <div class="text-left">
-                                    <p id="selectedFileName" class="text-cyber-blue font-mono"></p>
-                                    <p id="selectedFileSize" class="text-xs text-gray-400"></p>
-                                </div>
-                            </div>
-                            <button type="button" id="removeFile"
-                                    class="text-xs text-cyber-red hover:text-cyber-red/80 transition-colors">
-                                Remove File
-                            </button>
-                        </div>
-                        <input type="file" class="hidden" id="fileInput" accept="*/*"/>
-                    </label>
-                </div>
+						<!-- File Preview State (Hidden by default) -->
+						<div id="filePreview" class="hidden flex-col items-center justify-center h-full p-4">
+							<div class="flex items-center space-x-4 mb-2">
+								<svg class="w-8 h-8 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+								</svg>
+								<div class="text-left">
+									<p id="selectedFileName" class="text-cyber-blue font-mono"></p>
+									<p id="selectedFileSize" class="text-xs text-gray-400"></p>
+								</div>
+							</div>
+							<button type="button" id="removeFile"
+								class="text-xs text-cyber-red hover:text-cyber-red/80 transition-colors">
+								Remove File
+							</button>
+						</div>
+						<input type="file" class="hidden" id="fileInput" accept="*/*" />
+					</label>
+				</div>
 
-                <!-- Upload Button and Status -->
-                <div class="flex items-center space-x-4">
-                    <button type="submit" id="uploadButton"
-                            class="px-4 py-2 bg-cyber-red/20 hover:bg-cyber-red/30 text-cyber-red rounded-lg font-mono text-sm transition-all flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-                        </svg>
-                        UPLOAD FILE
-                    </button>
-                    <span id="uploadStatus" class="text-sm text-gray-400"></span>
-                </div>
-            </form>
-        </div>
-    </div>
+				<!-- Upload Button and Status -->
+				<div class="flex items-center space-x-4">
+					<button type="submit" id="uploadButton"
+						class="px-4 py-2 bg-cyber-red/20 hover:bg-cyber-red/30 text-cyber-red rounded-lg font-mono text-sm transition-all flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+						<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+						</svg>
+						UPLOAD FILE
+					</button>
+					<span id="uploadStatus" class="text-sm text-gray-400"></span>
+				</div>
+			</form>
+		</div>
+	</div>
 
-    <!-- Files List -->
-    <div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg overflow-hidden">
-        <div class="p-4 border-b border-cyber-red/20 flex justify-between items-center">
-            <h2 class="text-xl font-bold text-cyber-red">Uploaded Files</h2>
-            <div class="flex items-center space-x-2">
-                <input type="text" placeholder="Search files..."
-                       class="px-3 py-1 bg-cyber-dark/50 border border-cyber-red/20 rounded-lg text-sm focus:outline-none focus:border-cyber-red">
-                <select class="px-3 py-1 bg-cyber-dark/50 border border-cyber-red/20 rounded-lg text-sm focus:outline-none focus:border-cyber-red">
-                    <option value="all">All Files</option>
-                    <option value="images">Images</option>
-                    <option value="documents">Documents</option>
-                    <option value="others">Others</option>
-                </select>
-            </div>
-        </div>
+	<!-- Files List -->
+	<div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg overflow-hidden">
+		<div class="p-4 border-b border-cyber-red/20 flex justify-between items-center">
+			<h2 class="text-xl font-bold text-cyber-red">Uploaded Files</h2>
+			<div class="flex items-center space-x-2">
+				<input type="text" placeholder="Search files..."
+					class="px-3 py-1 bg-cyber-dark/50 border border-cyber-red/20 rounded-lg text-sm focus:outline-none focus:border-cyber-red">
+				<select
+					class="px-3 py-1 bg-cyber-dark/50 border border-cyber-red/20 rounded-lg text-sm focus:outline-none focus:border-cyber-red">
+					<option value="all">All Files</option>
+					<option value="images">Images</option>
+					<option value="documents">Documents</option>
+					<option value="others">Others</option>
+				</select>
+			</div>
+		</div>
 
-        <div class="overflow-x-auto">
-            <table class="w-full" id="filesTable">
-                <thead class="text-left">
-                <tr class="border-b border-cyber-red/20">
-                    <th class="p-4">Filename</th>
-                    <th class="p-4">Type</th>
-                    <th class="p-4">Size</th>
-                    <th class="p-4">Upload Date</th>
-                    <th class="p-4">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
+		<div class="overflow-x-auto">
+			<table class="w-full" id="filesTable">
+				<thead class="text-left">
+					<tr class="border-b border-cyber-red/20">
+						<th class="p-4">Filename</th>
+						<th class="p-4">Type</th>
+						<th class="p-4">Size</th>
+						<th class="p-4">Upload Date</th>
+						<th class="p-4">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
 
-                </tbody>
-            </table>
-        </div>
-    </div>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </section>
 
 <!-- Copy Link Modal -->
 <div id="copyLinkModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center">
-    <div class="bg-cyber-dark border border-cyber-red/20 rounded-lg p-6 max-w-lg w-full m-4">
-        <h3 class="text-xl font-bold text-cyber-red mb-4">File Link</h3>
-        <div class="flex items-center space-x-2 mb-4">
-            <input type="text" id="fileLink" readonly
-                   class="w-full px-3 py-2 bg-cyber-dark/50 border border-cyber-red/20 rounded-lg text-sm focus:outline-none focus:border-cyber-red">
-            <button onclick="copyFileLink()"
-                    class="p-2 bg-cyber-red/20 hover:bg-cyber-red/30 text-cyber-red rounded-lg transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
-                </svg>
-            </button>
-        </div>
-        <button onclick="closeModal()"
-                class="w-full px-4 py-2 bg-cyber-red/20 hover:bg-cyber-red/30 text-cyber-red rounded-lg font-mono text-sm transition-all">
-            CLOSE
-        </button>
-    </div>
+	<div class="bg-cyber-dark border border-cyber-red/20 rounded-lg p-6 max-w-lg w-full m-4">
+		<h3 class="text-xl font-bold text-cyber-red mb-4">File Link</h3>
+		<div class="flex items-center space-x-2 mb-4">
+			<input type="text" id="fileLink" readonly
+				class="w-full px-3 py-2 bg-cyber-dark/50 border border-cyber-red/20 rounded-lg text-sm focus:outline-none focus:border-cyber-red">
+			<button onclick="copyFileLink()"
+				class="p-2 bg-cyber-red/20 hover:bg-cyber-red/30 text-cyber-red rounded-lg transition-all">
+				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+						d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+				</svg>
+			</button>
+		</div>
+		<button onclick="closeModal()"
+			class="w-full px-4 py-2 bg-cyber-red/20 hover:bg-cyber-red/30 text-cyber-red rounded-lg font-mono text-sm transition-all">
+			CLOSE
+		</button>
+	</div>
 </div>
 
 <script>
-    function setupUploadForm() {
-        const form = document.getElementById('uploadForm');
-        const fileInput = document.getElementById('fileInput');
-        const dropZone = document.getElementById('dropZone');
-        const defaultUploadState = document.getElementById('defaultUploadState');
-        const filePreview = document.getElementById('filePreview');
-        const selectedFileName = document.getElementById('selectedFileName');
-        const selectedFileSize = document.getElementById('selectedFileSize');
-        const removeFileBtn = document.getElementById('removeFile');
-        const uploadButton = document.getElementById('uploadButton');
-        const status = document.getElementById('uploadStatus');
+	const form = document.getElementById('uploadForm');
+	const fileInput = document.getElementById('fileInput');
+	const dropZone = document.getElementById('dropZone');
+	const defaultUploadState = document.getElementById('defaultUploadState');
+	const filePreview = document.getElementById('filePreview');
+	const selectedFileName = document.getElementById('selectedFileName');
+	const selectedFileSize = document.getElementById('selectedFileSize');
+	const removeFileBtn = document.getElementById('removeFile');
+	const uploadButton = document.getElementById('uploadButton');
+	const status = document.getElementById('uploadStatus');
+	function setupUploadForm() {
 
-        // Disable upload button by default
-        uploadButton.disabled = true;
+		// Disable upload button by default
+		uploadButton.disabled = true;
+		// File input change handler
+		fileInput.addEventListener('change', handleFileSelect);
 
-        // File input change handler
-        fileInput.addEventListener('change', handleFileSelect);
-
-        // Remove file button handler
-        removeFileBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            clearFileSelection();
-        });
+		// Remove file button handler
+		// This remove file button handler has been moved to the bottom of the script and improved
 
 
-        // Drag and drop handlers
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('border-cyber-red');
-        });
+		// Drag and drop handlers
+		dropZone.addEventListener('dragover', (e) => {
+			e.preventDefault();
+			dropZone.classList.add('border-cyber-red');
+		});
 
-        dropZone.addEventListener('dragleave', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('border-cyber-red');
-        });
+		dropZone.addEventListener('dragleave', (e) => {
+			e.preventDefault();
+			dropZone.classList.remove('border-cyber-red');
+		});
 
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('border-cyber-red');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                fileInput.files = files;
-                handleFileSelect();
-            }
-        });
+		dropZone.addEventListener('drop', (e) => {
+			e.preventDefault();
+			dropZone.classList.remove('border-cyber-red');
+			const files = e.dataTransfer.files;
+			if (files.length > 0) {
+				fileInput.files = files;
+				handleFileSelect();
+			}
+		});
 
-        // Form submit handler
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const file = fileInput.files[0];
-            if (!file) return;
+		// Form submit handler
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			const file = fileInput.files[0];
+			if (!file) return;
 
-            const formData = new FormData();
-            formData.append('file', file);
+			const formData = new FormData();
+			formData.append('file', file);
 
-            try {
-                uploadButton.disabled = true;
-                status.textContent = 'Uploading...';
-                status.className = 'text-sm text-cyber-blue';
+			try {
+				uploadButton.disabled = true;
+				status.textContent = 'Uploading...';
+				status.className = 'text-sm text-cyber-blue';
 
-                const response = await fetch('/portal/upload', {
-                    method: 'POST',
-                    body: formData
-                });
+				const response = await fetch('/portal/upload', {
+					method: 'POST',
+					body: formData
+				});
 
-                const data = await response.json();
-                if (response.ok) {
-                    status.textContent = 'Upload successful!';
-                    status.className = 'text-sm text-green-500';
-                    clearFileSelection();
-                    loadFiles(); // Refresh the files list
-                } else {
-                    throw new Error(data.message || 'Upload failed');
-                }
-            } catch (error) {
-                status.textContent = error.message;
-                status.className = 'text-sm text-red-500';
-                uploadButton.disabled = false;
-            }
-        });
+				const data = await response.json();
+				if (response.ok) {
+					status.textContent = 'Upload successful!';
+					status.className = 'text-sm text-green-500';
+					clearFileSelection();
+					loadFiles(); // Refresh the files list
+				} else {
+					throw new Error(data.message || 'Upload failed');
+				}
+			} catch (error) {
+				status.textContent = error.message;
+				status.className = 'text-sm text-red-500';
+				uploadButton.disabled = false;
+			}
+		});
 
-        function clearFileSelection() {
-            fileInput.value = '';
-            defaultUploadState.classList.remove('hidden');
-            filePreview.classList.add('hidden');
-            uploadButton.disabled = true;
-            status.textContent = '';
-        }
-    }
+		function clearFileSelection() {
+			fileInput.value = '';
+			defaultUploadState.classList.remove('hidden');
+			filePreview.classList.add('hidden');
+			uploadButton.disabled = true;
+			status.textContent = '';
+		}
+	}
 
-    // Initialize the form when the document loads
-    document.addEventListener('DOMContentLoaded', function () {
-        loadFiles();
-        setupUploadForm();
-    });
+	// Initialize the form when the document loads
+	document.addEventListener('DOMContentLoaded', function () {
+		loadFiles();
+		setupUploadForm();
+	});
 
-    async function loadFiles() {
-        try {
-        const response = await fetch('/api/files');
-        const files = await response.json();
-        
-        const tbody = document.querySelector('#filesTable tbody');
-        
-        if (!Array.isArray(files) || files.length === 0) {
-            tbody.innerHTML = `
+	async function loadFiles() {
+		try {
+			const response = await fetch('/api/files');
+			const files = await response.json();
+
+			const tbody = document.querySelector('#filesTable tbody');
+
+			if (!Array.isArray(files) || files.length === 0) {
+				tbody.innerHTML = `
                 <tr class="border-b border-cyber-red/10">
                     <td colspan="5" class="p-4 text-center text-gray-400">
                         No files uploaded yet
                     </td>
                 </tr>
             `;
-            return;
-        }
+				return;
+			}
 
-        tbody.innerHTML = files.map(file => `
+			tbody.innerHTML = files.map(file => `
             <tr class="border-b border-cyber-red/10 hover:bg-cyber-red/5">
                 <td class="p-4">
                     <div class="flex items-center">
                         <svg class="w-5 h-5 mr-2 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                         </svg>
-                        ${file.original_filename || 'Unnamed File'}
+                        <a href="/files/raw/${file.stored_filename}" class="text-cyber-blue hover:text-cyber-red transition-colors cursor-pointer">
+                            ${file.original_filename || 'Unnamed File'}
+                        </a>
                     </div>
                 </td>
                 <td class="p-4">${file.file_type || 'Unknown'}</td>
@@ -256,12 +252,12 @@
                 <td class="p-4">${file.upload_date?.$date ? new Date(file.upload_date.$date).toLocaleString() : 'Unknown'}</td>
                 <td class="p-4">
                     <div class="flex items-center space-x-2">
-                        <button onclick="showFileLink('/files/${file.stored_filename}')" class="p-1 hover:bg-cyber-red/10 rounded transition-all text-cyber-red">
+                        <button onclick="showFileLink('/files/raw/${file.stored_filename}')" class="p-1 hover:bg-cyber-red/10 rounded transition-all text-cyber-red">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                             </svg>
                         </button>
-                        <button onclick="deleteFile('${file._id}')" class="p-1 hover:bg-cyber-red/10 rounded transition-all text-cyber-red">
+                        <button onclick="deleteFile('${file.stored_filename}')" class="p-1 hover:bg-cyber-red/10 rounded transition-all text-cyber-red">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
@@ -270,89 +266,100 @@
                 </td>
             </tr>
         `).join('');
-    } catch (error) {
-        console.error('Error loading files:', error);
-        const tbody = document.querySelector('#filesTable tbody');
-        tbody.innerHTML = `
+		} catch (error) {
+			console.error('Error loading files:', error);
+			const tbody = document.querySelector('#filesTable tbody');
+			tbody.innerHTML = `
             <tr class="border-b border-cyber-red/10">
                 <td colspan="5" class="p-4 text-center text-red-500">
                     Error loading files. Please try again later.
                 </td>
             </tr>
         `;
-    }
-}
+		}
+	}
 
-    function formatFileSize(bytes) {
-        if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
+	function formatFileSize(bytes) {
+		if (bytes === 0) return '0 Bytes';
+		const k = 1024;
+		const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+		const i = Math.floor(Math.log(bytes) / Math.log(k));
+		return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+	}
 
-    function showFileLink(url) {
-        const modal = document.getElementById('copyLinkModal');
-        const input = document.getElementById('fileLink');
-        modal.classList.remove('hidden');
-        input.value = url;
-    }
+	function showFileLink(url) {
+		const modal = document.getElementById('copyLinkModal');
+		const input = document.getElementById('fileLink');
+		modal.classList.remove('hidden');
+		input.value = url;
+	}
 
-    function closeModal() {
-        document.getElementById('copyLinkModal').classList.add('hidden');
-    }
+	function closeModal() {
+		document.getElementById('copyLinkModal').classList.add('hidden');
+	}
 
-    function copyFileLink() {
-        const input = document.getElementById('fileLink');
-        input.select();
-        document.execCommand('copy');
-        alert('Link copied to clipboard!');
-    }
+	function copyFileLink() {
+		const input = document.getElementById('fileLink');
+		input.select();
+		document.execCommand('copy');
+		alert('Link copied to clipboard!');
+	}
 
-    async function deleteFile(fileId) {
-        if (!confirm('Are you sure you want to delete this file?')) return;
+	async function deleteFile(filename) {
+		if (!confirm('Are you sure you want to delete this file?')) return;
 
-        try {
-            const response = await fetch(`/api/files/${fileId}`, {
-                method: 'DELETE'
-            });
+		try {
+			const response = await fetch(`/api/files/${filename}`, {
+				method: 'DELETE'
+			});
 
-            if (response.ok) {
-                loadFiles(); // Refresh the files list
-            } else {
-                throw new Error('Failed to delete file');
-            }
-        } catch (error) {
-            console.error('Error deleting file:', error);
-            alert('Failed to delete file');
-        }
-    }
+			if (response.ok) {
+				loadFiles(); // Refresh the files list
+			} else {
+				throw new Error('Failed to delete file');
+			}
+		} catch (error) {
+			console.error('Error deleting file:', error);
+			alert('Failed to delete file');
+		}
+	}
 
-    // Add click handler for the dropzone to trigger file input
-    dropZone.addEventListener('click', (e) => {
-        fileInput.click();
-    });
+	// Add click handler for the dropzone to trigger file input
+	dropZone.addEventListener('click', (e) => {
+		fileInput.click();
+	});
 
-    // Prevent click on preview from triggering file input
-    filePreview.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
+	// Prevent click on preview from triggering file input
+	filePreview.addEventListener('click', (e) => {
+		e.stopPropagation();
+	});
 
-    // Prevent click on remove button from triggering file input
+	// Prevent click on remove button from triggering file input
+	removeFileBtn.addEventListener('click', (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		// Clear the file input
+		fileInput.value = '';
+		// Reset UI state
+		defaultUploadState.classList.remove('hidden');
+		filePreview.classList.add('hidden');
+		filePreview.style.display = 'none'; // Ensure display property is reset
+		uploadButton.disabled = true;
+		status.textContent = '';
+	});
 
-
-    function handleFileSelect(e) {
-        const file = fileInput.files[0];
-        if (file) {
-            // Show file preview
-            selectedFileName.textContent = file.name;
-            selectedFileSize.textContent = formatFileSize(file.size);
-            defaultUploadState.classList.add('hidden');
-            filePreview.classList.remove('hidden');
-            filePreview.style.display = 'flex';  // Add this line
-            uploadButton.disabled = false;
-            status.textContent = '';
-        }
-    }
+	function handleFileSelect(e) {
+		const file = fileInput.files[0];
+		if (file) {
+			// Show file preview
+			selectedFileName.textContent = file.name;
+			selectedFileSize.textContent = formatFileSize(file.size);
+			defaultUploadState.classList.add('hidden');
+			filePreview.classList.remove('hidden');
+			filePreview.style.display = 'flex';  // Add this line
+			uploadButton.disabled = false;
+			status.textContent = '';
+		}
+	}
 </script>
 {% endblock %}

@@ -1,4 +1,7 @@
-from flask import Blueprint, render_template, g, request, jsonify, current_app, send_from_directory
+import html
+
+from bson import ObjectId
+from flask import Blueprint, render_template, g, request, jsonify, current_app, send_from_directory, make_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import os
 from werkzeug.utils import secure_filename
@@ -11,8 +14,7 @@ portalBlueprint = Blueprint('portalBlueprint', __name__)
 
 # Allowed file extensions
 ALLOWED_EXTENSIONS = ['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx', 'xls', 'xlsx', 'zip', 'rar', "html",
-                      "css"
-                      "script", "py", "ps1", ""]
+                      "css","script", "py", "ps1", ""]
 
 
 def allowed_file(filename):
@@ -90,8 +92,8 @@ def upload():
             'stored_filename': unique_filename,
             'file_type': file_ext,
             'size': file_size,
-            'upload_date': datetime.utcnow(),
-            'owner_id': str(g.current_user["_id"]),
+            'upload_date': datetime.now(),
+            'owner_id': ObjectId(g.current_user["_id"]),
             'owner_username': g.current_user["username"],
         }
         print(file_record)
@@ -114,7 +116,7 @@ def upload():
 @jwt_required()
 def list_files():
     try:
-        files = list(mongo.db.uploads.find({'owner_id': str(g.current_user["_id"])}))
+        files = list(mongo.db.uploads.find({'owner_id': ObjectId(g.current_user["_id"])}))
         for file in files:
             file['_id'] = str(file['_id'])
         return jsonify(files)
@@ -123,15 +125,16 @@ def list_files():
         return jsonify({'error': 'Failed to list files'}), 500
 
 
-@portalBlueprint.delete("/api/files/<file_id>")
+@portalBlueprint.delete("/api/files/<filename>")
 @jwt_required()
-def delete_file(file_id):
+def delete_file(filename):
+    query = {
+        "owner_id": ObjectId(g.current_user["_id"]),
+        "stored_filename" : filename
+    }
     try:
         # Get file info from database
-        file = mongo.db.uploads.find_one({
-            'owner_id': g.current_user['id']
-        })
-
+        file = mongo.db.uploads.find_one(query)
         if not file:
             return jsonify({'error': 'File not found'}), 404
 
@@ -141,8 +144,7 @@ def delete_file(file_id):
             os.remove(file_path)
 
         # Delete database record
-        mongo.db.uploads.delete_one({'id': file_id})
-
+        mongo.db.uploads.delete_one(query)
         return jsonify({'message': 'File deleted successfully'}), 200
 
     except Exception as e:
@@ -167,4 +169,30 @@ def serve_file(filename):
 
     except Exception as e:
         current_app.logger.error(f"Serve file error: {str(e)}")
+        return jsonify({'error': 'Failed to serve file'}), 500
+
+
+@portalBlueprint.get("/files/raw/<filename>")
+@jwt_required()
+def serve_raw_file(filename):
+    try:
+        # Verify file ownership
+        file = mongo.db.uploads.find_one({
+            'stored_filename': filename,
+            'owner_id':  ObjectId(g.current_user['id'])
+        })
+        print(file)
+        return "ok"
+        if file:
+            with open(os.path.join(current_app.config['UPLOAD_FOLDER'], filename), 'r', encoding='utf-8-sig') as f:
+                response = make_response()
+                response.headers["Content-Type"] = "text/plain; charset=utf-8"
+                response.headers["Content-Disposition"] = f'inline; filename="{filename}"'
+                content = f.read()
+                content = html.escape(content)
+            return content
+        else:
+            return jsonify({'error': 'File not found'}), 404
+    except Exception as e:
+        current_app.logger.error(f"Serve raw file error: {str(e)}")
         return jsonify({'error': 'Failed to serve file'}), 500
