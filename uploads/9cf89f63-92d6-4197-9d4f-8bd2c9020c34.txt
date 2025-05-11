@@ -1,0 +1,43 @@
+This mod will add the Exhaust Backfire FX Effect from the Vanilla Bike Sanctus to any Addon Car or Bike.
+
+Installation is fairly simple, just make sure to place all files correctly and to add the correct lines to the meta files.
+
+1. Use OpenIV to open the dlc.rpf file from the Addon Vehicle you want to add the FX Effect.
+
+2. Now add the files from my archive in dlc.rpf/x64/data/effects create the folders in your dlc.rpf if they not exist add all 3 files:
+   - ptfx.rpf
+   - ptfx_hi.rpf
+   - ptfx_lo.rpf
+
+3. Edit the content.xml file in your dlc.rpf and add the following lines:
+
+   Place between the <dataFiles></dataFiles> Tags
+
+   <Item>
+   	<filename>dlc_RenameToFolderNameOfYourDLC:/%PLATFORM%/data/effects/ptfx.rpf</filename>
+   	<fileType>RPF_FILE</fileType>
+   	<overlay value="false" />
+   	<disabled value="true" />
+   	<persistent value="true" />
+   </Item>
+
+   -> Make sure to rename the <filename>dlc_RenameToFoldernameOfYourDLC</filename> above to your dlc.rpf main folder name!
+      Example: <filename>dlc_NissanSkyline</filename>
+
+---
+
+   Place between the <filesToEnable></filesToEnable> Tags
+
+   <Item>dlc_RenameToFolderNameOfYourDLC:/%PLATFORM%/data/effects/ptfx.rpf</Item>
+
+   -> Again rename to your dlc.rpf main folder name!
+      Example: <Item>dlc_NissanSkyline:/%PLATFORM%/data/effects/ptfx.rpf</Item>
+
+4. Now edit the vehicles.meta file of your dlc.rpf mostly located in dlc.rpf/data/vehicles.meta
+   Find and replace the lines <ptfxAssetName></ptfxAssetName> & <vfxInfoName></vfxInfoName> with the following:
+
+   <ptfxAssetName>veh_sanctus</ptfxAssetName>
+
+   <vfxInfoName>VFXVEHICLEINFO_MOTORBIKE_SANCTUS</vfxInfoName>
+
+5. That's it guys - I hope you will enjoy!

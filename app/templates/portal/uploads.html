@@ -201,11 +201,11 @@
 				uploadButton.disabled = false;
 			}
 		});
-
 		function clearFileSelection() {
 			fileInput.value = '';
 			defaultUploadState.classList.remove('hidden');
 			filePreview.classList.add('hidden');
+			filePreview.style.display = 'none'; // Ensure display property is reset
 			uploadButton.disabled = true;
 			status.textContent = '';
 		}

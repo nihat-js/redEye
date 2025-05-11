@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>Hava Nəqliyyatı Məlumatları</title>
+    <link rel="stylesheet" href="./button.css">
+    <style>
+      body { font-family: sans-serif; padding: 40px; }
+      label, select, button { font-size: 16px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Hava Nəqliyyatı Məlumatları</h1>
+    <form method="post" action="{{ url_for('button1.submit_data') }}">
+        <label for="country">Ölkə seçin:</label>
+        <select name="country" id="country" required>
+            <option value="Amerika Birləşmiş Ştatları">Amerika Birləşmiş Ştatları</option>
+            <option value="Afrika Birləşmiş Respublikası">Afrika Birləşmiş Respublikası</option>
+            <option value="Albaniya">Albaniya</option>
+            <option value="Almaniya">Almaniya</option>
+            <option value="Avstriya">Avstriya</option>
+            <option value="Bəhreyn">Bəhreyn</option>
+            <option value="Belarus">Belarus</option>
+            <option value="Belçika">Belçika</option>
+            <option value="Bolqarıstan">Bolqarıstan</option>
+            <option value="Bosniya və Herseqovina">Bosniya və Herseqovina</option>
+            <option value="Çexiya">Çexiya</option>
+            <option value="Çin">Çin</option>
+            <option value="Cəbəllüttariq">Cəbəllüttariq</option>
+            <option value="Efiopiya">Efiopiya</option>
+            <option value="Estoniya">Estoniya</option>
+            <option value="Əfqanıstan">Əfqanıstan</option>
+            <option value="Əlcəzair">Əlcəzair</option>
+            <option value="Finlandiya">Finlandiya</option>
+            <option value="Fransa">Fransa</option>
+            <option value="Gürcüstan">Gürcüstan</option>
+            <option value="Honq Konq">Honq Konq</option>
+            <option value="Hindistan">Hindistan</option>
+            <option value="İordaniya">İordaniya</option>
+            <option value="İran">İran</option>
+            <option value="İraq">İraq</option>
+            <option value="İrlandiya">İrlandiya</option>
+            <option value="İspaniya">İspaniya</option>
+            <option value="İsrail">İsrail</option>
+            <option value="İsveç">İsveç</option>
+            <option value="İsveçrə">İsveçrə</option>
+            <option value="İtaliya">İtaliya</option>
+            <option value="Yaponiya">Yaponiya</option>
+            <option value="Kipr">Kipr</option>
+            <option value="Küveyt">Küveyt</option>
+            <option value="Latviya">Latviya</option>
+            <option value="Litva">Litva</option>
+            <option value="Lüksemburq">Lüksemburq</option>
+            <option value="Macarıstan">Macarıstan</option>
+            <option value="Maldiv Adaları">Maldiv Adaları</option>
+            <option value="Malayziya">Malayziya</option>
+            <option value="Mərakeş">Mərakeş</option>
+            <option value="Moldova">Moldova</option>
+            <option value="Monqolustan">Monqolustan</option>
+            <option value="Monteneqro">Monteneqro</option>
+            <option value="Niderland">Niderland</option>
+            <option value="Norveç">Norveç</option>
+            <option value="Oman">Oman</option>
+            <option value="Özbəkistan">Özbəkistan</option>
+            <option value="Pakistan">Pakistan</option>
+            <option value="Polşa">Polşa</option>
+            <option value="Portuqaliya">Portuqaliya</option>
+            <option value="Qazaxıstan">Qazaxıstan</option>
+            <option value="Qətər">Qətər</option>
+            <option value="Qırğızıstan">Qırğızıstan</option>
+            <option value="Rusiya">Rusiya</option>
+            <option value="Rumıniya">Rumıniya</option>
+            <option value="Səudiyyə Ərəbistanı">Səudiyyə Ərəbistanı</option>
+            <option value="Serbiya">Serbiya</option>
+            <option value="Sinqapur">Sinqapur</option>
+            <option value="Slovakiya">Slovakiya</option>
+            <option value="Sloveniya">Sloveniya</option>
+            <option value="Şotlandiya">Şotlandiya</option>
+            <option value="Tacikistan">Tacikistan</option>
+            <option value="Türkiyə">Türkiyə</option>
+            <option value="Türkmənistan">Türkmənistan</option>
+            <option value="Ukrayna">Ukrayna</option>
+            <option value="Yunanıstan">Yunanıstan</option>
+
+        </select>
+        <br><br>
+
+        <label for="year">İl seçin:</label>
+        <select name="year" id="year" required>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+        </select>
+        <br><br>
+
+        <label for="month">Ay seçin:</label>
+        <select name="month" id="month" required>
+            <option value="Yanvar">Yanvar</option>
+            <option value="Fevral">Fevral</option>
+            <option value="Mart">Mart</option>
+            <option value="Aprel">Aprel</option>
+            <option value="May">May</option>
+            <option value="İyun">İyun</option>
+            <option value="İyul">İyul</option>
+            <option value="Avqust">Avqust</option>
+            <option value="Sentyabr">Sentyabr</option>
+            <option value="Oktyabr">Oktyabr</option>
+            <option value="Noyabr">Noyabr</option>
+            <option value="Dekabr">Dekabr</option>
+        </select>
+        <br><br>
+
+        <button type="submit">Təsdiqlə</button>
+    </form>
+    <br>
+    <a href="{{ url_for('button1.home') }}">Əsas səhifəyə qayıt</a>
+</body>
+</html>

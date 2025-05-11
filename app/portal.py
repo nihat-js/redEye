@@ -179,10 +179,8 @@ def serve_raw_file(filename):
         # Verify file ownership
         file = mongo.db.uploads.find_one({
             'stored_filename': filename,
-            'owner_id':  ObjectId(g.current_user['id'])
+            'owner_id':  ObjectId(g.current_user['_id'])
         })
-        print(file)
-        return "ok"
         if file:
             with open(os.path.join(current_app.config['UPLOAD_FOLDER'], filename), 'r', encoding='utf-8-sig') as f:
                 response = make_response()
