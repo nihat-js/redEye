@@ -284,12 +284,19 @@
 		const i = Math.floor(Math.log(bytes) / Math.log(k));
 		return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 	}
-
 	function showFileLink(url) {
 		const modal = document.getElementById('copyLinkModal');
 		const input = document.getElementById('fileLink');
+		const fullUrl = document.location.origin + url;
+		
+		input.value = fullUrl;
+		
 		modal.classList.remove('hidden');
-		input.value = url;
+		
+		setTimeout(() => {
+			input.focus();
+			input.select();
+		}, 100);
 	}
 
 	function closeModal() {
@@ -298,9 +305,52 @@
 
 	function copyFileLink() {
 		const input = document.getElementById('fileLink');
-		input.select();
-		document.execCommand('copy');
-		alert('Link copied to clipboard!');
+		
+		// Try to use the modern Clipboard API if available
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+			navigator.clipboard.writeText(input.value)
+				.then(() => {
+					showCopyFeedback('Link copied to clipboard!');
+				})
+				.catch(err => {
+					console.error('Failed to copy: ', err);
+					// Fallback to the older method
+					fallbackCopyToClipboard(input);
+				});
+		} else {
+			// Fallback for browsers that don't support the Clipboard API
+			fallbackCopyToClipboard(input);
+		}
+	}
+	
+	function fallbackCopyToClipboard(inputElement) {
+		try {
+			inputElement.select();
+			const success = document.execCommand('copy');
+			if (success) {
+				showCopyFeedback('Link copied to clipboard!');
+			} else {
+				showCopyFeedback('Copy failed. Please select and copy manually.', true);
+			}
+		} catch (err) {
+			console.error('Error during copy: ', err);
+			showCopyFeedback('Copy failed. Please select and copy manually.', true);
+		}
+	}
+	
+	function showCopyFeedback(message, isError = false) {
+		const feedbackElement = document.createElement('div');
+		feedbackElement.textContent = message;
+		feedbackElement.className = `fixed bottom-4 right-4 py-2 px-4 rounded-lg ${isError ? 'bg-red-500' : 'bg-green-500'} text-white`;
+		document.body.appendChild(feedbackElement);
+		
+		setTimeout(() => {
+			feedbackElement.style.opacity = '0';
+			feedbackElement.style.transition = 'opacity 0.5s ease-out';
+			setTimeout(() => {
+				document.body.removeChild(feedbackElement);
+			}, 500);
+		}, 2000);
 	}
 
 	async function deleteFile(filename) {
