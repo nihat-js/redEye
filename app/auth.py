@@ -16,8 +16,6 @@ users = [
 ]
 
 
-
-
 @authBlueprint.get("/login")
 def login():
     return render_template('auth/login.html')
@@ -29,8 +27,11 @@ def loginPost():
     password = request.form["password"]
 
     user = mongo.db.users.find_one({"username": username})
+    print(user)
     if user and user["password"] == password:
-        access_token = create_access_token(identity=username)
+        access_token = create_access_token(identity=str(user["_id"]))
+        print("------32")
+        print(str(user["_id"]))
         response = make_response(redirect("/portal"))
         set_access_cookies(response, access_token)
         return response

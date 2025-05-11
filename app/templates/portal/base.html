@@ -290,12 +290,12 @@
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyber-red to-cyber-blue p-0.5">
                     <div class="w-full h-full bg-cyber-dark rounded-lg flex items-center justify-center">
-                        <span class="text-xl font-bold text-cyber-red">{{ user[0]|upper }}</span>
+                        <span class="text-xl font-bold text-cyber-red">{{ current_user.username[0]|upper }}</span>
                     </div>
                 </div>
                 <div>
                     <h3 class="font-mono text-sm text-gray-400">LOGGED IN AS</h3>
-                    <p class="text-cyber-red font-bold">{{ user }}</p>
+                    <p class="text-cyber-red font-bold">{{ current_user.username }}</p>
                 </div>
             </div>
         </div>
