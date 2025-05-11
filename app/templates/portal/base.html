@@ -1,540 +1,549 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RedEye C2 Framework</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap"
-          rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        cyber: ['Rajdhani', 'sans-serif'],
-                        mono: ['Share Tech Mono', 'monospace'],
-                    },
-                    colors: {
-                        'cyber-red': '#ff2a6d',
-                        'cyber-blue': '#05d9e8',
-                        'cyber-dark': '#0d1117',
-                        'cyber-darker': '#010409',
-                        'cyber-neon': '#39ff14',
-                    },
-                    animation: {
-                        'pulse-fast': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'glow': 'glow 2s ease-in-out infinite alternate',
-                        'scan': 'scan 4s linear infinite',
-                    },
-                }
-            }
-        }
-    </script>
-    <style>
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 5px #ff2a6d, 0 0 10px #ff2a6d, 0 0 15px #ff2a6d;
-            }
-            to {
-                text-shadow: 0 0 10px #ff2a6d, 0 0 20px #ff2a6d, 0 0 30px #ff2a6d;
-            }
-        }
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>RedEye C2 Framework</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap"
+		rel="stylesheet">
+	<script>
+		tailwind.config = {
+			darkMode: 'class',
+			theme: {
+				extend: {
+					fontFamily: {
+						cyber: ['Rajdhani', 'sans-serif'],
+						mono: ['Share Tech Mono', 'monospace'],
+					},
+					colors: {
+						'cyber-red': '#ff2a6d',
+						'cyber-blue': '#05d9e8',
+						'cyber-dark': '#0d1117',
+						'cyber-darker': '#010409',
+						'cyber-neon': '#39ff14',
+					},
+					animation: {
+						'pulse-fast': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+						'glow': 'glow 2s ease-in-out infinite alternate',
+						'scan': 'scan 4s linear infinite',
+					},
+				}
+			}
+		}
+	</script>
+	<style>
+		@keyframes glow {
+			from {
+				text-shadow: 0 0 5px #ff2a6d, 0 0 10px #ff2a6d, 0 0 15px #ff2a6d;
+			}
 
-        @keyframes scan {
-            0% {
-                transform: translateY(-100%);
-            }
-            100% {
-                transform: translateY(100%);
-            }
-        }
+			to {
+				text-shadow: 0 0 10px #ff2a6d, 0 0 20px #ff2a6d, 0 0 30px #ff2a6d;
+			}
+		}
 
-        .hex-grid {
-            background: linear-gradient(60deg, #ff2a6d12 25%, transparent 25.5%, transparent 75%, #ff2a6d12 75.5%),
-            linear-gradient(-60deg, #ff2a6d12 25%, transparent 25.5%, transparent 75%, #ff2a6d12 75.5%);
-            background-size: 40px 70px;
-            background-position: 0 0, 0 0;
-        }
+		@keyframes scan {
+			0% {
+				transform: translateY(-100%);
+			}
 
-        .scanner::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #ff2a6d, transparent);
-            animation: scan 4s linear infinite;
-        }
-    </style>
+			100% {
+				transform: translateY(100%);
+			}
+		}
+
+		.hex-grid {
+			background: linear-gradient(60deg, #ff2a6d12 25%, transparent 25.5%, transparent 75%, #ff2a6d12 75.5%),
+				linear-gradient(-60deg, #ff2a6d12 25%, transparent 25.5%, transparent 75%, #ff2a6d12 75.5%);
+			background-size: 40px 70px;
+			background-position: 0 0, 0 0;
+		}
+
+		.scanner::before {
+			content: '';
+			position: absolute;
+			width: 100%;
+			height: 2px;
+			background: linear-gradient(90deg, transparent, #ff2a6d, transparent);
+			animation: scan 4s linear infinite;
+		}
+	</style>
 </head>
+
 <body class="bg-cyber-darker font-cyber text-gray-200 min-h-screen">
-<div class="flex min-h-screen">
-    <!-- Sidebar -->
-    <div class="w-64 bg-cyber-dark border-r border-cyber-red/20 relative overflow-hidden scanner">
-        <!-- Logo -->
-        <div class="p-6 border-b border-cyber-red/20">
-            <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 rounded-lg bg-cyber-red/20 flex items-center justify-center">
-                    <svg class="w-6 h-6 text-cyber-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                    </svg>
-                </div>
-                <h1 class="text-2xl font-bold text-cyber-red animate-glow">RedEye</h1>
-            </div>
-        </div>
+	<div class="flex min-h-screen">
+		<!-- Sidebar -->
+		<div class="w-64 bg-cyber-dark border-r border-cyber-red/20 relative overflow-hidden scanner">
+			<!-- Logo -->
+			<div class="p-6 border-b border-cyber-red/20">
+				<div class="flex items-center space-x-2">
+					<div class="w-8 h-8 rounded-lg bg-cyber-red/20 flex items-center justify-center">
+						<svg class="w-6 h-6 text-cyber-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+						</svg>
+					</div>
+					<h1 class="text-2xl font-bold text-cyber-red animate-glow">RedEye</h1>
+				</div>
+			</div>
 
-        <!-- Navigation -->
-        <nav class="p-4 space-y-2">
-            <!-- Dashboard -->
-            <a href="/dashboard"
-               class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                <svg class="w-5 h-5 mr-3 text-cyber-red group-hover:animate-pulse-fast" fill="none"
-                     stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                </svg>
-                <span class="font-mono">DASHBOARD</span>
-            </a>
+			<!-- Navigation -->
+			<nav class="p-4 space-y-2">
+				<!-- Dashboard -->
+				<a href="/portal"
+					class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+					<svg class="w-5 h-5 mr-3 text-cyber-red group-hover:animate-pulse-fast" fill="none" stroke="currentColor"
+						viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+							d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+					</svg>
+					<span class="font-mono">DASHBOARD</span>
+				</a>
 
-            <!-- Main sections... (enumeration, exploitation etc) -->
+				<!-- Main sections... (enumeration, exploitation etc) -->
 
-            <nav class="p-4 space-y-2">
-                <!-- Dashboard - Hamı üçün -->
-                <a href="/dashboard"
-                   class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                    <svg class="w-5 h-5 mr-3 text-cyber-red group-hover:animate-pulse-fast" fill="none"
-                         stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                    </svg>
-                    <span class="font-mono">DASHBOARD</span>
-                </a>
+				<nav class="p-4 space-y-2">
+					<!-- Dashboard - Hamı üçün -->
+					<a href="/portal"
+						class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+						<svg class="w-5 h-5 mr-3 text-cyber-red group-hover:animate-pulse-fast" fill="none" stroke="currentColor"
+							viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+						</svg>
+						<span class="font-mono">DASHBOARD</span>
+					</a>
 
-                <!-- Enumerate Section -->
-                {% if current_user.username == 'root' or current_user.username == 'enumerate' %}
-                <a href="/incidents/enumerate"
-                   class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                    <svg class="w-5 h-5 mr-3 text-cyber-blue group-hover:animate-pulse-fast" fill="none"
-                         stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                    <span class="font-mono">ENUMERATION</span>
-                    <span class="ml-auto bg-red-500/20 text-red-500 px-2 py-1 rounded text-xs">15</span>
-                </a>
-                {% endif %}
+					<!-- Enumerate Section -->
+					{% if current_user.username == 'root' or current_user.username == 'enumerate' %}
+					<a href="/portal/enumeration"
+						class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+						<svg class="w-5 h-5 mr-3 text-cyber-blue group-hover:animate-pulse-fast" fill="none" stroke="currentColor"
+							viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+						</svg>
+						<span class="font-mono">ENUMERATION</span>
+						<span class="ml-auto bg-red-500/20 text-red-500 px-2 py-1 rounded text-xs">15</span>
+					</a>
+					{% endif %}
 
-                <!-- Exploit Section -->
-                {% if current_user.username == 'root' or current_user.username == 'exploit' %}
-                <a href="/incidents/exploit"
-                   class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                    <svg class="w-5 h-5 mr-3 text-cyber-blue group-hover:animate-pulse-fast" fill="none"
-                         stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                    </svg>
-                    <span class="font-mono">EXPLOITATION</span>
-                    <span class="ml-auto bg-red-500/20 text-red-500 px-2 py-1 rounded text-xs">8</span>
-                </a>
-                {% endif %}
+					<!-- Exploit Section -->
+					{% if current_user.username == 'root' or current_user.username == 'exploit' %}
+					<a href="/portal/exploitation"
+						class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+						<svg class="w-5 h-5 mr-3 text-cyber-blue group-hover:animate-pulse-fast" fill="none" stroke="currentColor"
+							viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+						</svg>
+						<span class="font-mono">EXPLOITATION</span>
+						<span class="ml-auto bg-red-500/20 text-red-500 px-2 py-1 rounded text-xs">8</span>
+					</a>
+					{% endif %}
 
-                <!-- Privilege Escalation Section -->
-                {% if current_user.username == 'root' or current_user.username == 'privesc' %}
-                <a href="/incidents/privesc"
-                   class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                    <svg class="w-5 h-5 mr-3 text-cyber-blue group-hover:animate-pulse-fast" fill="none"
-                         stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                    <span class="font-mono">PRIV ESCALATION</span>
-                    <span class="ml-auto bg-red-500/20 text-red-500 px-2 py-1 rounded text-xs">12</span>
-                </a>
-                {% endif %}
+					<!-- Privilege Escalation Section -->
+					{% if current_user.username == 'root' or current_user.username == 'privesc' %}
+					<a href="/portal/privilegeEscalation"
+						class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+						<svg class="w-5 h-5 mr-3 text-cyber-blue group-hover:animate-pulse-fast" fill="none" stroke="currentColor"
+							viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+						</svg>
+						<span class="font-mono">PRIV ESCALATION</span>
+						<span class="ml-auto bg-red-500/20 text-red-500 px-2 py-1 rounded text-xs">12</span>
+					</a>
+					{% endif %}
 
-                <!-- Active Directory Section -->
-                {% if current_user.username == 'root' or current_user.username == 'ad' %}
-                <a href="/incidents/ad"
-                   class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                    <svg class="w-5 h-5 mr-3 text-cyber-blue group-hover:animate-pulse-fast" fill="none"
-                         stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                    </svg>
-                    <span class="font-mono">ACTIVE DIRECTORY</span>
-                    <span class="ml-auto bg-red-500/20 text-red-500 px-2 py-1 rounded text-xs">6</span>
-                </a>
-                {% endif %}
+					<!-- Active Directory Section -->
+					{% if current_user.username == 'root' or current_user.username == 'ad' %}
+					<a href="/portal/activeDirectory"
+						class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+						<svg class="w-5 h-5 mr-3 text-cyber-blue group-hover:animate-pulse-fast" fill="none" stroke="currentColor"
+							viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+						</svg>
+						<span class="font-mono">ACTIVE DIRECTORY</span>
+						<span class="ml-auto bg-red-500/20 text-red-500 px-2 py-1 rounded text-xs">6</span>
+					</a>
+					{% endif %}
 
-                <!-- Tools Section - Hamı üçün -->
-                <a href="/tools"
-                   class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                    <svg class="w-5 h-5 mr-3 text-cyber-red group-hover:animate-pulse-fast" fill="none"
-                         stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    <span class="font-mono">TOOLS</span>
-                </a>
-            </nav>
+					<!-- Tools Section - Hamı üçün -->
+					<a href="/portal/uploads"
+						class="flex items-center px-4 py-3 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+						<svg class="w-5 h-5 mr-3 text-cyber-red group-hover:animate-pulse-fast" fill="none" stroke="currentColor"
+							viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8l-4-4m0 0L8 8m4-4v12" />
+						</svg>
 
-            <!-- Tools Section -->
-            <div class="space-y-1">
-                <!-- Tools Header -->
-                <div class="px-4 py-2">
-                    <span class="font-mono text-sm text-cyber-red">TOOLS</span>
-                </div>
-                <!-- Tools Items -->
-                <div class="pl-4 space-y-1">
-                    <a href="/tools/encoder"
-                       class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                        <svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
-                        </svg>
-                        <span class="font-mono text-sm">Base64 Encoder/Decoder</span>
-                    </a>
+						<span class="font-mono">Uploads</span>
+					</a>
+				</nav>
 
-                    <a href="/tools/hash"
-                       class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                        <svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
-                        </svg>
-                        <span class="font-mono text-sm">Hash Generator</span>
-                    </a>
+				<!-- Tools Section -->
+				<div class="space-y-1">
+					<!-- Tools Header -->
+					<div class="px-4 py-2">
+						<span class="font-mono text-sm text-cyber-red">TOOLS</span>
+					</div>
+					<!-- Tools Items -->
+					<div class="pl-4 space-y-1">
+						<a href="/tools/encoder"
+							class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+							<svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+							</svg>
+							<span class="font-mono text-sm">Base64 Encoder/Decoder</span>
+						</a>
 
-                    <a href="/tools/jwt"
-                       class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                        <svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
-                        <span class="font-mono text-sm">JWT Decoder</span>
-                    </a>
+						<a href="/tools/hash"
+							class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+							<svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+							</svg>
+							<span class="font-mono text-sm">Hash Generator</span>
+						</a>
 
-                    <a href="/tools/url"
-                       class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                        <svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
-                        </svg>
-                        <span class="font-mono text-sm">URL Encoder/Decoder</span>
-                    </a>
+						<a href="/tools/jwt"
+							class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+							<svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+							</svg>
+							<span class="font-mono text-sm">JWT Decoder</span>
+						</a>
 
-                    <a href="/tools/regex"
-                       class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                        <svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
-                        </svg>
-                        <span class="font-mono text-sm">Regex Tester</span>
-                    </a>
-                </div>
-            </div>
+						<a href="/tools/url"
+							class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+							<svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+							</svg>
+							<span class="font-mono text-sm">URL Encoder/Decoder</span>
+						</a>
 
-            <!-- Documentation Section -->
-            <div class="space-y-1">
-                <!-- Documentation Header -->
-                <div class="px-4 py-2">
-                    <span class="font-mono text-sm text-cyber-red">DOCUMENTATION</span>
-                </div>
-                <!-- Documentation Items -->
-                <div class="pl-4 space-y-1">
-                    <a href="/docs/guides"
-                       class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                        <svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                        </svg>
-                        <span class="font-mono text-sm">User Guides</span>
-                    </a>
+						<a href="/tools/regex"
+							class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+							<svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+							</svg>
+							<span class="font-mono text-sm">Regex Tester</span>
+						</a>
+					</div>
+				</div>
 
-                    <a href="/docs/api"
-                       class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                        <svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                        <span class="font-mono text-sm">API Reference</span>
-                    </a>
+				<!-- Documentation Section -->
+				<div class="space-y-1">
+					<!-- Documentation Header -->
+					<div class="px-4 py-2">
+						<span class="font-mono text-sm text-cyber-red">DOCUMENTATION</span>
+					</div>
+					<!-- Documentation Items -->
+					<div class="pl-4 space-y-1">
+						<a href="/docs/guides"
+							class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+							<svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+							</svg>
+							<span class="font-mono text-sm">User Guides</span>
+						</a>
 
-                    <a href="/docs/examples"
-                       class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                        <svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                        <span class="font-mono text-sm">Example Scripts</span>
-                    </a>
+						<a href="/docs/api"
+							class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+							<svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+							</svg>
+							<span class="font-mono text-sm">API Reference</span>
+						</a>
 
-                    <a href="/docs/changelog"
-                       class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
-                        <svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        <span class="font-mono text-sm">Changelog</span>
-                    </a>
-                </div>
-            </div>
-        </nav>
-        <!-- User Profile -->
-        <div class="absolute bottom-0 w-full p-4 border-t border-cyber-red/20">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyber-red to-cyber-blue p-0.5">
-                    <div class="w-full h-full bg-cyber-dark rounded-lg flex items-center justify-center">
-                        <span class="text-xl font-bold text-cyber-red">{{ current_user.username[0]|upper }}</span>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="font-mono text-sm text-gray-400">LOGGED IN AS</h3>
-                    <p class="text-cyber-red font-bold">{{ current_user.username }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
+						<a href="/docs/examples"
+							class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+							<svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+							</svg>
+							<span class="font-mono text-sm">Example Scripts</span>
+						</a>
 
-    <!-- Main Content -->
-    <div class="flex-1 flex flex-col">
-        <!-- Top Bar -->
-        <header class="h-16 bg-cyber-dark border-b border-cyber-red/20 flex items-center justify-between px-6">
-            <div class="flex items-center space-x-4">
-                <div class="w-3 h-3 rounded-full bg-cyber-red animate-pulse"></div>
-                <span class="font-mono text-sm text-cyber-red">SYSTEM STATUS: ACTIVE</span>
-            </div>
-            <div class="flex items-center space-x-4">
-                <button class="px-4 py-2 bg-cyber-red/10 hover:bg-cyber-red/20 text-cyber-red rounded-lg font-mono text-sm transition-all">
-                    NEW OPERATION
-                </button>
-                <button class="p-2 hover:bg-cyber-red/10 rounded-lg transition-all" title="Settings">
-                    <svg class="w-5 h-5 text-cyber-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                </button>
-            </div>
-        </header>
+						<a href="/docs/changelog"
+							class="flex items-center px-4 py-2 text-gray-300 hover:bg-cyber-red/10 rounded-lg group transition-all">
+							<svg class="w-4 h-4 mr-3 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+							</svg>
+							<span class="font-mono text-sm">Changelog</span>
+						</a>
+					</div>
+				</div>
+			</nav>
+			<!-- User Profile -->
+			<div class="absolute bottom-0 w-full p-4 border-t border-cyber-red/20">
+				<div class="flex items-center space-x-3">
+					<div class="w-10 h-10 rounded-lg bg-gradient-to-br from-cyber-red to-cyber-blue p-0.5">
+						<div class="w-full h-full bg-cyber-dark rounded-lg flex items-center justify-center">
+							<span class="text-xl font-bold text-cyber-red">{{ current_user.username[0]|upper }}</span>
+						</div>
+					</div>
+					<div>
+						<h3 class="font-mono text-sm text-gray-400">LOGGED IN AS</h3>
+						<p class="text-cyber-red font-bold">{{ current_user.username }}</p>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <!-- Content Area -->
-        <main class="flex-1 p-6 bg-cyber-darker hex-grid">
+		<!-- Main Content -->
+		<div class="flex-1 flex flex-col">
+			<!-- Top Bar -->
+			<header class="h-16 bg-cyber-dark border-b border-cyber-red/20 flex items-center justify-between px-6">
+				<div class="flex items-center space-x-4">
+					<div class="w-3 h-3 rounded-full bg-cyber-red animate-pulse"></div>
+					<span class="font-mono text-sm text-cyber-red">SYSTEM STATUS: ACTIVE</span>
+				</div>
+				<div class="flex items-center space-x-4">
+					<button
+						class="px-4 py-2 bg-cyber-red/10 hover:bg-cyber-red/20 text-cyber-red rounded-lg font-mono text-sm transition-all">
+						NEW OPERATION
+					</button>
+					<button class="p-2 hover:bg-cyber-red/10 rounded-lg transition-all" title="Settings">
+						<svg class="w-5 h-5 text-cyber-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+						</svg>
+					</button>
+				</div>
+			</header>
+
+			<!-- Content Area -->
+			<main class="flex-1 p-6 bg-cyber-darker hex-grid">
 
 
-            {% block title %}Incidents - RedEye C2 Framework{% endblock %}
+				{% block title %}Incidents - RedEye C2 Framework{% endblock %}
 
-            {% block extra_css %}
-            <style>
-                .incidents-section {
-                    min-height: 100vh;
-                    padding: 7rem 2rem 2rem;
-                    position: relative;
-                    z-index: 1;
-                }
+				{% block extra_css %}
+				<style>
+					.incidents-section {
+						min-height: 100vh;
+						padding: 7rem 2rem 2rem;
+						position: relative;
+						z-index: 1;
+					}
 
-                .incidents-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                    gap: 2rem;
-                    max-width: 1400px;
-                    margin: 0 auto;
-                }
+					.incidents-grid {
+						display: grid;
+						grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+						gap: 2rem;
+						max-width: 1400px;
+						margin: 0 auto;
+					}
 
-                .incident-card {
-                    background: rgba(26, 26, 26, 0.8);
-                    border: 1px solid var(--primary-color);
-                    border-radius: 10px;
-                    padding: 2rem;
-                    position: relative;
-                    overflow: hidden;
-                    transition: transform 0.3s ease, box-shadow 0.3s ease;
-                }
+					.incident-card {
+						background: rgba(26, 26, 26, 0.8);
+						border: 1px solid var(--primary-color);
+						border-radius: 10px;
+						padding: 2rem;
+						position: relative;
+						overflow: hidden;
+						transition: transform 0.3s ease, box-shadow 0.3s ease;
+					}
 
-                .incident-card:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 0 20px rgba(255, 42, 109, 0.3);
-                }
+					.incident-card:hover {
+						transform: translateY(-5px);
+						box-shadow: 0 0 20px rgba(255, 42, 109, 0.3);
+					}
 
-                .locked-card {
-                    filter: grayscale(1);
-                    pointer-events: none;
-                }
+					.locked-card {
+						filter: grayscale(1);
+						pointer-events: none;
+					}
 
-                .locked-card::before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(0, 0, 0, 0.7);
-                    z-index: 1;
-                }
+					.locked-card::before {
+						content: '';
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+						bottom: 0;
+						background: rgba(0, 0, 0, 0.7);
+						z-index: 1;
+					}
 
-                .lock-icon {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    font-size: 3rem;
-                    color: var(--primary-color);
-                    z-index: 2;
-                }
+					.lock-icon {
+						position: absolute;
+						top: 50%;
+						left: 50%;
+						transform: translate(-50%, -50%);
+						font-size: 3rem;
+						color: var(--primary-color);
+						z-index: 2;
+					}
 
-                .severity-badge {
-                    position: absolute;
-                    top: 1rem;
-                    right: 1rem;
-                    padding: 0.3rem 1rem;
-                    border-radius: 15px;
-                    font-size: 0.9rem;
-                    font-weight: bold;
-                }
+					.severity-badge {
+						position: absolute;
+						top: 1rem;
+						right: 1rem;
+						padding: 0.3rem 1rem;
+						border-radius: 15px;
+						font-size: 0.9rem;
+						font-weight: bold;
+					}
 
-                .severity-high {
-                    background: rgba(239, 68, 68, 0.2);
-                    color: #ef4444;
-                    border: 1px solid #ef4444;
-                }
+					.severity-high {
+						background: rgba(239, 68, 68, 0.2);
+						color: #ef4444;
+						border: 1px solid #ef4444;
+					}
 
-                .severity-medium {
-                    background: rgba(245, 158, 11, 0.2);
-                    color: #f59e0b;
-                    border: 1px solid #f59e0b;
-                }
+					.severity-medium {
+						background: rgba(245, 158, 11, 0.2);
+						color: #f59e0b;
+						border: 1px solid #f59e0b;
+					}
 
-                .severity-low {
-                    background: rgba(34, 197, 94, 0.2);
-                    color: #22c55e;
-                    border: 1px solid #22c55e;
-                }
+					.severity-low {
+						background: rgba(34, 197, 94, 0.2);
+						color: #22c55e;
+						border: 1px solid #22c55e;
+					}
 
-                .incident-stats {
-                    display: flex;
-                    gap: 1rem;
-                    margin-top: 1rem;
-                    padding-top: 1rem;
-                    border-top: 1px solid rgba(255, 255, 255, 0.1);
-                }
+					.incident-stats {
+						display: flex;
+						gap: 1rem;
+						margin-top: 1rem;
+						padding-top: 1rem;
+						border-top: 1px solid rgba(255, 255, 255, 0.1);
+					}
 
-                .stat-item {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                }
-            </style>
-            {% endblock %}
+					.stat-item {
+						display: flex;
+						align-items: center;
+						gap: 0.5rem;
+					}
+				</style>
+				{% endblock %}
 
-            {% block content %}
-            <section class="incidents-section">
-                <div class="text-center mb-12">
-                    <h1 class="text-4xl md:text-5xl font-bold text-[var(--primary-color)] mb-4">Incident Reports</h1>
-                    <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                        Welcome, {{ current_user.username }}!
-                        {% if current_user.username == 'root' %}
-                        You have access to all incidents.
-                        {% else %}
-                        You have access to {{ current_user.username }} related incidents.
-                        {% endif %}
-                    </p>
-                </div>
+				{% block content %}
+				<section class="incidents-section">
+					<div class="text-center mb-12">
+						<h1 class="text-4xl md:text-5xl font-bold text-[var(--primary-color)] mb-4">Incident Reports</h1>
+						<p class="text-xl text-gray-300 max-w-3xl mx-auto">
+							Welcome, {{ current_user.username }}!
+							{% if current_user.username == 'root' %}
+							You have access to all incidents.
+							{% else %}
+							You have access to {{ current_user.username }} related incidents.
+							{% endif %}
+						</p>
+					</div>
 
-                <div class="incidents-grid">
-                    <!-- Enumerate Section -->
-                    <div class="incident-card {% if current_user.username != 'root' and current_user.username != 'enumerate' %}locked-card{% endif %}">
-                        {% if current_user.username != 'root' and current_user.username != 'enumerate' %}
-                        <i class="fas fa-lock lock-icon"></i>
-                        {% endif %}
-                        <span class="severity-badge severity-high">High Severity</span>
-                        <h3 class="text-2xl font-bold text-[var(--primary-color)] mb-3">Enumeration Incidents</h3>
-                        <p class="text-gray-300 mb-4">Network reconnaissance and information gathering incidents</p>
-                        <div class="incident-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-exclamation-triangle text-[var(--primary-color)]"></i>
-                                <span>15 Active</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-check-circle text-green-500"></i>
-                                <span>23 Resolved</span>
-                            </div>
-                        </div>
-                    </div>
+					<div class="incidents-grid">
+						<!-- Enumerate Section -->
+						<div
+							class="incident-card {% if current_user.username != 'root' and current_user.username != 'enumerate' %}locked-card{% endif %}">
+							{% if current_user.username != 'root' and current_user.username != 'enumerate' %}
+							<i class="fas fa-lock lock-icon"></i>
+							{% endif %}
+							<span class="severity-badge severity-high">High Severity</span>
+							<h3 class="text-2xl font-bold text-[var(--primary-color)] mb-3">Enumeration Incidents</h3>
+							<p class="text-gray-300 mb-4">Network reconnaissance and information gathering incidents</p>
+							<div class="incident-stats">
+								<div class="stat-item">
+									<i class="fas fa-exclamation-triangle text-[var(--primary-color)]"></i>
+									<span>15 Active</span>
+								</div>
+								<div class="stat-item">
+									<i class="fas fa-check-circle text-green-500"></i>
+									<span>23 Resolved</span>
+								</div>
+							</div>
+						</div>
 
-                    <!-- Exploit Section -->
-                    <div class="incident-card {% if current_user.username != 'root' and current_user.username != 'exploit' %}locked-card{% endif %}">
-                        {% if current_user.username != 'root' and current_user.username != 'exploit' %}
-                        <i class="fas fa-lock lock-icon"></i>
-                        {% endif %}
-                        <span class="severity-badge severity-high">High Severity</span>
-                        <h3 class="text-2xl font-bold text-[var(--primary-color)] mb-3">Exploitation Incidents</h3>
-                        <p class="text-gray-300 mb-4">Security vulnerability exploitation attempts</p>
-                        <div class="incident-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-exclamation-triangle text-[var(--primary-color)]"></i>
-                                <span>8 Active</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-check-circle text-green-500"></i>
-                                <span>17 Resolved</span>
-                            </div>
-                        </div>
-                    </div>
+						<!-- Exploit Section -->
+						<div
+							class="incident-card {% if current_user.username != 'root' and current_user.username != 'exploit' %}locked-card{% endif %}">
+							{% if current_user.username != 'root' and current_user.username != 'exploit' %}
+							<i class="fas fa-lock lock-icon"></i>
+							{% endif %}
+							<span class="severity-badge severity-high">High Severity</span>
+							<h3 class="text-2xl font-bold text-[var(--primary-color)] mb-3">Exploitation Incidents</h3>
+							<p class="text-gray-300 mb-4">Security vulnerability exploitation attempts</p>
+							<div class="incident-stats">
+								<div class="stat-item">
+									<i class="fas fa-exclamation-triangle text-[var(--primary-color)]"></i>
+									<span>8 Active</span>
+								</div>
+								<div class="stat-item">
+									<i class="fas fa-check-circle text-green-500"></i>
+									<span>17 Resolved</span>
+								</div>
+							</div>
+						</div>
 
-                    <!-- Privilege Escalation Section -->
-                    <div class="incident-card {% if current_user.username != 'root' and current_user.username != 'privesc' %}locked-card{% endif %}">
-                        {% if current_user.username != 'root' and current_user.username != 'privesc' %}
-                        <i class="fas fa-lock lock-icon"></i>
-                        {% endif %}
-                        <span class="severity-badge severity-high">High Severity</span>
-                        <h3 class="text-2xl font-bold text-[var(--primary-color)] mb-3">Privilege Escalation</h3>
-                        <p class="text-gray-300 mb-4">Unauthorized privilege elevation attempts</p>
-                        <div class="incident-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-exclamation-triangle text-[var(--primary-color)]"></i>
-                                <span>12 Active</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-check-circle text-green-500"></i>
-                                <span>19 Resolved</span>
-                            </div>
-                        </div>
-                    </div>
+						<!-- Privilege Escalation Section -->
+						<div
+							class="incident-card {% if current_user.username != 'root' and current_user.username != 'privesc' %}locked-card{% endif %}">
+							{% if current_user.username != 'root' and current_user.username != 'privesc' %}
+							<i class="fas fa-lock lock-icon"></i>
+							{% endif %}
+							<span class="severity-badge severity-high">High Severity</span>
+							<h3 class="text-2xl font-bold text-[var(--primary-color)] mb-3">Privilege Escalation</h3>
+							<p class="text-gray-300 mb-4">Unauthorized privilege elevation attempts</p>
+							<div class="incident-stats">
+								<div class="stat-item">
+									<i class="fas fa-exclamation-triangle text-[var(--primary-color)]"></i>
+									<span>12 Active</span>
+								</div>
+								<div class="stat-item">
+									<i class="fas fa-check-circle text-green-500"></i>
+									<span>19 Resolved</span>
+								</div>
+							</div>
+						</div>
 
-                    <!-- Active Directory Section -->
-                    <div class="incident-card {% if current_user.username != 'root' and current_user.username != 'ad' %}locked-card{% endif %}">
-                        {% if current_user.username != 'root' and current_user.username != 'ad' %}
-                        <i class="fas fa-lock lock-icon"></i>
-                        {% endif %}
-                        <span class="severity-badge severity-medium">Medium Severity</span>
-                        <h3 class="text-2xl font-bold text-[var(--primary-color)] mb-3">Active Directory</h3>
-                        <p class="text-gray-300 mb-4">AD security and access control incidents</p>
-                        <div class="incident-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-exclamation-triangle text-[var(--primary-color)]"></i>
-                                <span>6 Active</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-check-circle text-green-500"></i>
-                                <span>11 Resolved</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            {% endblock %}
-        </main>
-    </div>
-</div>
+						<!-- Active Directory Section -->
+						<div
+							class="incident-card {% if current_user.username != 'root' and current_user.username != 'ad' %}locked-card{% endif %}">
+							{% if current_user.username != 'root' and current_user.username != 'ad' %}
+							<i class="fas fa-lock lock-icon"></i>
+							{% endif %}
+							<span class="severity-badge severity-medium">Medium Severity</span>
+							<h3 class="text-2xl font-bold text-[var(--primary-color)] mb-3">Active Directory</h3>
+							<p class="text-gray-300 mb-4">AD security and access control incidents</p>
+							<div class="incident-stats">
+								<div class="stat-item">
+									<i class="fas fa-exclamation-triangle text-[var(--primary-color)]"></i>
+									<span>6 Active</span>
+								</div>
+								<div class="stat-item">
+									<i class="fas fa-check-circle text-green-500"></i>
+									<span>11 Resolved</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				{% endblock %}
+			</main>
+		</div>
+	</div>
 
-<script>
-    // Add any additional JavaScript functionality here
-</script>
+	<script>
+		// Add any additional JavaScript functionality here
+	</script>
 </body>
+
 </html>

@@ -4,6 +4,7 @@ homeBlueprint = Blueprint("home", __name__)
 
 @homeBlueprint.route("/")
 def index():
+    print("home page access")
     return render_template("home/index.html")
 
 @homeBlueprint.route("/about")

@@ -21,19 +21,19 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@portalBlueprint.get("/portal")
+@portalBlueprint.get("/")
 @jwt_required()
 def portal():
     return render_template("portal/index.html", current_user=g.current_user)
 
 
-@portalBlueprint.get("/portal/enumeration")
+@portalBlueprint.get("/enumeration")
 @jwt_required()
 def enumerate():
     return render_template("portal/enumeration.html", current_user=g.current_user)
 
 
-@portalBlueprint.get("/portal/exploitation")
+@portalBlueprint.get("/exploitation")
 @jwt_required()
 def exploit():
     username = get_jwt_identity()
@@ -41,13 +41,13 @@ def exploit():
     return render_template("portal/exploitation.html", current_user=g.current_user)
 
 
-@portalBlueprint.get("/portal/activeDirectory")
+@portalBlueprint.get("/activeDirectory")
 @jwt_required()
 def ad():
-    return render_template("portal/activeDirectory.html", current_user=g.user)
+    return render_template("portal/activeDirectory.html", current_user=g.current_user)
 
 
-@portalBlueprint.get("/portal/privilegeEscalation")
+@portalBlueprint.get("/privilegeEscalation")
 @jwt_required()
 def privilege():
     return render_template("portal/privilegeEscalation.html", current_user=g.current_user)
@@ -59,7 +59,7 @@ def uploads():
     return render_template('portal/uploads.html', current_user=g.current_user)
 
 
-@portalBlueprint.post("/portal/upload")
+@portalBlueprint.post("/upload")
 @jwt_required()
 def upload():
     if 'file' not in request.files:
@@ -112,7 +112,7 @@ def upload():
         return jsonify({'error': 'Failed to upload file'}), 500
 
 
-@portalBlueprint.get("/api/files")
+@portalBlueprint.get("/files")
 @jwt_required()
 def list_files():
     try:
@@ -125,7 +125,7 @@ def list_files():
         return jsonify({'error': 'Failed to list files'}), 500
 
 
-@portalBlueprint.delete("/api/files/<filename>")
+@portalBlueprint.delete("/files/<filename>")
 @jwt_required()
 def delete_file(filename):
     query = {

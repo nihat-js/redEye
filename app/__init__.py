@@ -29,37 +29,42 @@ def create_app():
 
     # MongoDB-ni initialize edirik
     mongo.init_app(app)
-    jwt.init_app(app)
-
+    jwt.init_app(app)    
+    
     @app.before_request
     def before_request():
         try:
             verify_jwt_in_request(optional=True)
-            id= get_jwt_identity()
-            print("id is " + id)
+            id = get_jwt_identity()
             if id:
-                user = mongo.db.users.find_one({"_id":  ObjectId(id) })
-                print("Logged in user " + user.get("username"))
-                if user:
-                    g.current_user = user
-                else:
+                try:
+                    user = mongo.db.users.find_one({"_id": ObjectId(id)})
+                    if user:
+                        print(f"Logged in user: {user.get('username', 'unknown')}")
+                        g.current_user = user
+                    else:
+                        g.current_user = None
+                except Exception as e:
+                    print(f"Error finding user: {e}")
                     g.current_user = None
             else:
+                # Guest user - no token provided
                 g.current_user = None
-        except Exception:
+        except Exception as e:
+            print(f"Auth error: {e}")
             g.current_user = None
 
-    # Blueprint-ləri qeydiyyatdan keçiririk
     from app.auth import authBlueprint
     app.register_blueprint(authBlueprint)
-
+    
     from app.portal import portalBlueprint
-    app.register_blueprint(portalBlueprint)
-
+    app.register_blueprint(portalBlueprint, url_prefix="/portal")
+    
     from app.api import apiBlueprint
     app.register_blueprint(apiBlueprint)
 
     from app.home import homeBlueprint
     app.register_blueprint(homeBlueprint)
+
     
     return app
