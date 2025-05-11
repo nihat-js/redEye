@@ -1,0 +1,169 @@
+{% extends "portal/base.html" %}
+
+{% block title %}Tools - RedEye C2 Framework{% endblock %}
+
+{% block content %}
+<section class="p-6">
+	<!-- Header -->
+	<div class="mb-8">
+		<h1 class="text-4xl font-bold text-cyber-red mb-2">Cyber Tools</h1>
+		<p class="text-gray-400">Encoding, decoding and analysis utilities</p>
+	</div>
+
+	<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+		<!-- Base64 Encoder/Decoder -->
+		<div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-6">
+			<h2 class="text-xl font-bold text-cyber-red mb-4">Base64 Encoder/Decoder</h2>
+			
+			<div class="space-y-4">
+				<div>
+					<label class="block text-gray-400 mb-2">Input</label>
+					<textarea id="base64Input" class="w-full h-32 px-3 py-2 bg-cyber-dark/50 border border-cyber-red/20 rounded-lg text-sm focus:outline-none focus:border-cyber-red"
+						placeholder="Enter text to encode or Base64 to decode..."></textarea>
+				</div>
+				
+				<div class="flex space-x-2">
+					<button id="encodeBase64" class="px-4 py-2 bg-cyber-red/20 hover:bg-cyber-red/30 text-cyber-red rounded-lg font-mono text-sm transition-all">
+						ENCODE
+					</button>
+					<button id="decodeBase64" class="px-4 py-2 bg-cyber-red/20 hover:bg-cyber-red/30 text-cyber-red rounded-lg font-mono text-sm transition-all">
+						DECODE
+					</button>
+					<button id="clearBase64" class="px-4 py-2 bg-cyber-dark/70 hover:bg-cyber-dark/90 text-gray-400 rounded-lg font-mono text-sm transition-all ml-auto">
+						CLEAR
+					</button>
+				</div>
+				
+				<div>
+					<label class="block text-gray-400 mb-2">Output</label>
+					<div id="base64Output" class="w-full min-h-32 px-3 py-2 bg-cyber-dark/70 border border-cyber-red/10 rounded-lg text-sm font-mono overflow-auto break-all whitespace-pre-wrap"></div>
+				</div>
+				
+				<div id="base64Error" class="text-sm text-red-500 hidden"></div>
+			</div>
+		</div>
+
+		<!-- JWT Decoder -->
+		<div class="bg-cyber-dark/50 border border-cyber-red/20 rounded-lg p-6">
+			<h2 class="text-xl font-bold text-cyber-red mb-4">JWT Decoder</h2>
+			
+			<div class="space-y-4">
+				<div>
+					<label class="block text-gray-400 mb-2">JWT Token</label>
+					<textarea id="jwtInput" class="w-full h-32 px-3 py-2 bg-cyber-dark/50 border border-cyber-red/20 rounded-lg text-sm focus:outline-none focus:border-cyber-red"
+						placeholder="Paste JWT token here..."></textarea>
+				</div>
+				
+				<div class="flex space-x-2">
+					<button id="decodeJWT" class="px-4 py-2 bg-cyber-red/20 hover:bg-cyber-red/30 text-cyber-red rounded-lg font-mono text-sm transition-all">
+						DECODE
+					</button>
+					<button id="clearJWT" class="px-4 py-2 bg-cyber-dark/70 hover:bg-cyber-dark/90 text-gray-400 rounded-lg font-mono text-sm transition-all ml-auto">
+						CLEAR
+					</button>
+				</div>
+				
+				<div>
+					<label class="block text-gray-400 mb-2">Header</label>
+					<div id="jwtHeader" class="w-full min-h-16 px-3 py-2 bg-cyber-dark/70 border border-cyber-red/10 rounded-lg text-sm font-mono overflow-auto break-all"></div>
+				</div>
+				
+				<div>
+					<label class="block text-gray-400 mb-2">Payload</label>
+					<div id="jwtPayload" class="w-full min-h-16 px-3 py-2 bg-cyber-dark/70 border border-cyber-red/10 rounded-lg text-sm font-mono overflow-auto break-all"></div>
+				</div>
+				
+				<div>
+					<label class="block text-gray-400 mb-2">Signature</label>
+					<div id="jwtSignature" class="w-full min-h-16 px-3 py-2 bg-cyber-dark/70 border border-cyber-red/10 rounded-lg text-sm font-mono overflow-auto break-all"></div>
+				</div>
+				
+				<div id="jwtError" class="text-sm text-red-500 hidden"></div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	// Base64 functions
+	document.getElementById('encodeBase64').addEventListener('click', function() {
+		try {
+			const input = document.getElementById('base64Input').value;
+			if (!input) return;
+			
+			const encoded = btoa(input);
+			document.getElementById('base64Output').textContent = encoded;
+			document.getElementById('base64Error').classList.add('hidden');
+		} catch (error) {
+			document.getElementById('base64Error').textContent = 'Error encoding: ' + error.message;
+			document.getElementById('base64Error').classList.remove('hidden');
+		}
+	});
+
+	document.getElementById('decodeBase64').addEventListener('click', function() {
+		try {
+			const input = document.getElementById('base64Input').value;
+			if (!input) return;
+			
+			const decoded = atob(input);
+			document.getElementById('base64Output').textContent = decoded;
+			document.getElementById('base64Error').classList.add('hidden');
+		} catch (error) {
+			document.getElementById('base64Error').textContent = 'Error decoding: ' + error.message;
+			document.getElementById('base64Error').classList.remove('hidden');
+		}
+	});
+
+	document.getElementById('clearBase64').addEventListener('click', function() {
+		document.getElementById('base64Input').value = '';
+		document.getElementById('base64Output').textContent = '';
+		document.getElementById('base64Error').classList.add('hidden');
+	});
+
+	// JWT functions
+	document.getElementById('decodeJWT').addEventListener('click', function() {
+		try {
+			const token = document.getElementById('jwtInput').value.trim();
+			if (!token) return;
+			
+			const parts = token.split('.');
+			if (parts.length !== 3) {
+				throw new Error('Invalid JWT format. Expected 3 parts (header, payload, signature)');
+			}
+			
+			// Decode header and payload
+			const header = JSON.parse(atob(parts[0]));
+			const payload = JSON.parse(atob(parts[1]));
+			
+			document.getElementById('jwtHeader').textContent = JSON.stringify(header, null, 2);
+			document.getElementById('jwtPayload').textContent = JSON.stringify(payload, null, 2);
+			document.getElementById('jwtSignature').textContent = parts[2];
+			document.getElementById('jwtError').classList.add('hidden');
+			
+			// Check if token is expired
+			if (payload.exp) {
+				const expDate = new Date(payload.exp * 1000);
+				const now = new Date();
+				if (now > expDate) {
+					document.getElementById('jwtError').textContent = 'Warning: This token is expired (Expired on: ' + expDate.toLocaleString() + ')';
+					document.getElementById('jwtError').classList.remove('hidden');
+				}
+			}
+		} catch (error) {
+			document.getElementById('jwtError').textContent = 'Error decoding JWT: ' + error.message;
+			document.getElementById('jwtError').classList.remove('hidden');
+			document.getElementById('jwtHeader').textContent = '';
+			document.getElementById('jwtPayload').textContent = '';
+			document.getElementById('jwtSignature').textContent = '';
+		}
+	});
+
+	document.getElementById('clearJWT').addEventListener('click', function() {
+		document.getElementById('jwtInput').value = '';
+		document.getElementById('jwtHeader').textContent = '';
+		document.getElementById('jwtPayload').textContent = '';
+		document.getElementById('jwtSignature').textContent = '';
+		document.getElementById('jwtError').classList.add('hidden');
+	});
+</script>
+{% endblock %}

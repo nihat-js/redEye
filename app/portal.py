@@ -59,6 +59,12 @@ def uploads():
     return render_template('portal/uploads.html', current_user=g.current_user)
 
 
+@portalBlueprint.get("/tools")
+@jwt_required()
+def tools():
+    return render_template('portal/tools.html', current_user=g.current_user)
+
+
 @portalBlueprint.post("/upload")
 @jwt_required()
 def upload():
